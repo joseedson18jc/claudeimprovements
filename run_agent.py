@@ -1,8 +1,20 @@
+from pathlib import Path
 from deepagents import create_deep_agent
+from deepagents.backends.local_shell import LocalShellBackend
+
+home_dir = str(Path.home())
+
+backend = LocalShellBackend(root_dir="/", virtual_mode=False)
 
 agent = create_deep_agent(
     model="anthropic:claude-sonnet-4-6",
-    system_prompt="You are a helpful coding assistant.",
+    system_prompt=(
+        "You are a helpful coding assistant. "
+        f"The user's home directory is {home_dir}. "
+        "You have full access to the entire filesystem. "
+        "When searching for files, use absolute paths."
+    ),
+    backend=backend,
 )
 
 messages = []
