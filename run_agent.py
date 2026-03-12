@@ -5,9 +5,32 @@ agent = create_deep_agent(
     system_prompt="You are a helpful coding assistant.",
 )
 
-result = agent.invoke(
-    {"messages": [{"role": "user", "content": "Hello! What can you help me with?"}]}
-)
+messages = []
 
-for msg in result["messages"]:
-    print(f"[{msg.type}]: {msg.content}")
+print("Deep Agent Chat (type 'exit' or 'quit' to stop)")
+print("-" * 50)
+
+while True:
+    try:
+        user_input = input("\n[you]: ").strip()
+    except (KeyboardInterrupt, EOFError):
+        print("\nGoodbye!")
+        break
+
+    if not user_input:
+        continue
+    if user_input.lower() in ("exit", "quit"):
+        print("Goodbye!")
+        break
+
+    messages.append({"role": "user", "content": user_input})
+
+    result = agent.invoke({"messages": messages})
+
+    # Get the last AI message from the result
+    for msg in result["messages"]:
+        if msg.type == "ai" and msg.content:
+            print(f"\n[ai]: {msg.content}")
+
+    # Keep full conversation history for context
+    messages = result["messages"]
