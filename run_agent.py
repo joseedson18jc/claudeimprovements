@@ -52,10 +52,23 @@ while True:
 
     result = agent.invoke({"messages": messages})
 
-    # Get the last AI message from the result
-    for msg in result["messages"]:
+    # Get the final AI response text
+    for msg in reversed(result["messages"]):
         if msg.type == "ai" and msg.content:
-            print(f"\n[ai]: {msg.content}")
+            # content can be a string or a list of content blocks
+            if isinstance(msg.content, str):
+                print(f"\n[ai]: {msg.content}")
+                break
+            elif isinstance(msg.content, list):
+                text_parts = []
+                for block in msg.content:
+                    if isinstance(block, dict) and block.get("type") == "text":
+                        text_parts.append(block["text"])
+                    elif hasattr(block, "type") and block.type == "text":
+                        text_parts.append(block.text)
+                if text_parts:
+                    print(f"\n[ai]: {''.join(text_parts)}")
+                    break
 
     # Keep full conversation history for context
     messages = result["messages"]
