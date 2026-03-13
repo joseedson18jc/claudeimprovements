@@ -50,44 +50,33 @@ while True:
 
     messages.append({"role": "user", "content": user_input})
 
-    print("\n[thinking...]")
-    result = agent.invoke({"messages": messages})
+    print()
 
-    # Print all AI text responses and tool activity
-    found_text = False
-    for msg in result["messages"]:
-        if msg.type == "ai" and msg.content:
-            if isinstance(msg.content, str):
-                print(f"\n[ai]: {msg.content}")
-                found_text = True
-            elif isinstance(msg.content, list):
-                text_parts = []
-                tool_names = []
-                for block in msg.content:
-                    if isinstance(block, dict):
-                        if block.get("type") == "text":
-                            text_parts.append(block["text"])
-                        elif block.get("type") == "tool_use":
-                            tool_names.append(block.get("name", "unknown"))
-                    elif hasattr(block, "type"):
-                        if block.type == "text":
-                            text_parts.append(block.text)
-                        elif block.type == "tool_use":
-                            tool_names.append(getattr(block, "name", "unknown"))
-                if tool_names:
-                    print(f"\n[tool]: {', '.join(tool_names)}")
-                if text_parts:
-                    print(f"\n[ai]: {''.join(text_parts)}")
-                    found_text = True
-        elif msg.type == "tool" and msg.content:
-            # Show truncated tool output
-            content = str(msg.content)
-            if len(content) > 500:
-                content = content[:500] + "..."
-            print(f"\n[result]: {content}")
+    # Stream events in real-time so output isn't stuck
+    all_new_msgs = []
+    for event in agent.stream({"messages": messages}, stream_mode="updates"):
+        for node_name, node_data in event.items():
+            msgs = node_data.get("messages", [])
+            for msg in msgs:
+                all_new_msgs.append(msg)
+                if msg.type == "ai" and msg.content:
+                    if isinstance(msg.content, str):
+                        print(f"[ai]: {msg.content}")
+                    elif isinstance(msg.content, list):
+                        for block in msg.content:
+                            btype = block.get("type") if isinstance(block, dict) else getattr(block, "type", None)
+                            if btype == "text":
+                                text = block.get("text") if isinstance(block, dict) else block.text
+                                print(f"[ai]: {text}")
+                            elif btype == "tool_use":
+                                name = block.get("name") if isinstance(block, dict) else getattr(block, "name", "?")
+                                print(f"[tool]: calling {name}...")
+                elif msg.type == "tool" and msg.content:
+                    content = str(msg.content)
+                    if len(content) > 300:
+                        content = content[:300] + "..."
+                    print(f"[result]: {content}")
+                sys.stdout.flush()
 
-    if not found_text:
-        print("\n[ai]: (no text response — agent may have only performed actions)")
-
-    # Keep full conversation history for context
-    messages = result["messages"]
+    # Build conversation history from streamed messages
+    messages = messages + all_new_msgs
