@@ -52,27 +52,36 @@ while True:
 
     print("\n[thinking...]")
 
-    # Use invoke with streaming callback approach - simpler and more reliable
     result = agent.invoke({"messages": messages})
 
-    # Extract all messages after our input
-    result_msgs = result.get("messages", [])
+    # DEBUG: dump the raw result structure so we can see what's happening
+    print("\n--- DEBUG: result keys ---")
+    print(type(result), list(result.keys()) if isinstance(result, dict) else dir(result))
 
-    # Find messages after the user's last input
+    result_msgs = result.get("messages", []) if isinstance(result, dict) else []
+    print(f"\n--- DEBUG: {len(result_msgs)} messages ---")
+    for i, msg in enumerate(result_msgs):
+        msg_type = getattr(msg, "type", type(msg).__name__)
+        content = getattr(msg, "content", None)
+        content_type = type(content).__name__
+        content_preview = str(content)[:200] if content else "(empty)"
+        print(f"  [{i}] type={msg_type} content_type={content_type}: {content_preview}")
+
+    # Display messages
     found_text = False
     for msg in result_msgs:
         if not hasattr(msg, "type"):
             continue
         if msg.type == "ai" and msg.content:
             if isinstance(msg.content, str):
-                print(f"[ai]: {msg.content}")
+                print(f"\n[ai]: {msg.content}")
                 found_text = True
             elif isinstance(msg.content, list):
                 for block in msg.content:
                     btype = block.get("type") if isinstance(block, dict) else getattr(block, "type", None)
                     if btype == "text":
                         text = block.get("text") if isinstance(block, dict) else block.text
-                        print(f"[ai]: {text}")
+                        print(f"\n[ai]: {text}")
                         found_text = True
                     elif btype == "tool_use":
                         name = block.get("name") if isinstance(block, dict) else getattr(block, "name", "?")
@@ -85,7 +94,7 @@ while True:
         sys.stdout.flush()
 
     if not found_text:
-        print("[ai]: (no text response — agent only performed actions)")
+        print("\n[ai]: (no text response — agent only performed actions)")
 
     # Keep full conversation history
     messages = result_msgs
