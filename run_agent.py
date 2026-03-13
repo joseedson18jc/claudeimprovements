@@ -1,4 +1,17 @@
+import os
+import sys
 from pathlib import Path
+
+from dotenv import load_dotenv
+
+load_dotenv()  # Load API key from .env file
+
+if not os.environ.get("ANTHROPIC_API_KEY"):
+    print("Error: ANTHROPIC_API_KEY is not set.")
+    print("Set it via: export ANTHROPIC_API_KEY='your-key'")
+    print("Or create a .env file with: ANTHROPIC_API_KEY=your-key")
+    sys.exit(1)
+
 from deepagents import create_deep_agent
 from deepagents.backends.local_shell import LocalShellBackend
 
