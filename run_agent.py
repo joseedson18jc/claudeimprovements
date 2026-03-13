@@ -50,25 +50,44 @@ while True:
 
     messages.append({"role": "user", "content": user_input})
 
+    print("\n[thinking...]")
     result = agent.invoke({"messages": messages})
 
-    # Get the final AI response text
-    for msg in reversed(result["messages"]):
+    # Print all AI text responses and tool activity
+    found_text = False
+    for msg in result["messages"]:
         if msg.type == "ai" and msg.content:
-            # content can be a string or a list of content blocks
             if isinstance(msg.content, str):
                 print(f"\n[ai]: {msg.content}")
-                break
+                found_text = True
             elif isinstance(msg.content, list):
                 text_parts = []
+                tool_names = []
                 for block in msg.content:
-                    if isinstance(block, dict) and block.get("type") == "text":
-                        text_parts.append(block["text"])
-                    elif hasattr(block, "type") and block.type == "text":
-                        text_parts.append(block.text)
+                    if isinstance(block, dict):
+                        if block.get("type") == "text":
+                            text_parts.append(block["text"])
+                        elif block.get("type") == "tool_use":
+                            tool_names.append(block.get("name", "unknown"))
+                    elif hasattr(block, "type"):
+                        if block.type == "text":
+                            text_parts.append(block.text)
+                        elif block.type == "tool_use":
+                            tool_names.append(getattr(block, "name", "unknown"))
+                if tool_names:
+                    print(f"\n[tool]: {', '.join(tool_names)}")
                 if text_parts:
                     print(f"\n[ai]: {''.join(text_parts)}")
-                    break
+                    found_text = True
+        elif msg.type == "tool" and msg.content:
+            # Show truncated tool output
+            content = str(msg.content)
+            if len(content) > 500:
+                content = content[:500] + "..."
+            print(f"\n[result]: {content}")
+
+    if not found_text:
+        print("\n[ai]: (no text response — agent may have only performed actions)")
 
     # Keep full conversation history for context
     messages = result["messages"]
