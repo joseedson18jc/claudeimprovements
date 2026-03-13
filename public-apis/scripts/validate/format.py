@@ -52,7 +52,10 @@ def get_categories_content(contents: List[str]) -> Tuple[Categories, CategoriesL
             category_line_num[category] = line_num
             continue
 
-        if not line_content.startswith('|') or line_content.startswith('|---'):
+        if not line_content.startswith('|') or line_content.startswith('|---') or line_content.startswith('|:---'):
+            continue
+
+        if not categories:
             continue
 
         raw_title = [
@@ -228,7 +231,16 @@ def check_file_format(lines: List[str]) -> List[str]:
             continue
 
         # skips lines that we do not care about
-        if not line_content.startswith('|') or line_content.startswith('|---'):
+        if not line_content.startswith('|') or line_content.startswith('|---') or line_content.startswith('|:---'):
+            continue
+
+        # skip table rows that appear before any category header
+        if not category:
+            continue
+
+        # skip table header rows (e.g. "| API | Description | Auth | HTTPS | CORS |")
+        segments_raw = [s.strip() for s in line_content.split('|')[1:-1]]
+        if segments_raw and segments_raw[0] == 'API':
             continue
 
         num_in_category += 1
