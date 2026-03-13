@@ -20,7 +20,7 @@ home_dir = str(Path.home())
 backend = LocalShellBackend(root_dir="/", virtual_mode=False)
 
 agent = create_deep_agent(
-    model="anthropic:claude-sonnet-4-6",
+    model="anthropic:claude-opus-4-6",
     system_prompt=(
         "You are a helpful coding assistant. "
         f"The user's home directory is {home_dir}. "
