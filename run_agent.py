@@ -52,31 +52,40 @@ while True:
 
     print()
 
-    # Stream events in real-time so output isn't stuck
-    all_new_msgs = []
-    for event in agent.stream({"messages": messages}, stream_mode="updates"):
-        for node_name, node_data in event.items():
-            msgs = node_data.get("messages", [])
-            for msg in msgs:
-                all_new_msgs.append(msg)
-                if msg.type == "ai" and msg.content:
-                    if isinstance(msg.content, str):
-                        print(f"[ai]: {msg.content}")
-                    elif isinstance(msg.content, list):
-                        for block in msg.content:
-                            btype = block.get("type") if isinstance(block, dict) else getattr(block, "type", None)
-                            if btype == "text":
-                                text = block.get("text") if isinstance(block, dict) else block.text
-                                print(f"[ai]: {text}")
-                            elif btype == "tool_use":
-                                name = block.get("name") if isinstance(block, dict) else getattr(block, "name", "?")
-                                print(f"[tool]: calling {name}...")
-                elif msg.type == "tool" and msg.content:
-                    content = str(msg.content)
-                    if len(content) > 300:
-                        content = content[:300] + "..."
-                    print(f"[result]: {content}")
-                sys.stdout.flush()
+    # Use invoke with streaming callback approach - simpler and more reliable
+    result = agent.invoke({"messages": messages})
 
-    # Build conversation history from streamed messages
-    messages = messages + all_new_msgs
+    # Extract all messages after our input
+    result_msgs = result.get("messages", [])
+
+    # Find messages after the user's last input
+    found_text = False
+    for msg in result_msgs:
+        if not hasattr(msg, "type"):
+            continue
+        if msg.type == "ai" and msg.content:
+            if isinstance(msg.content, str):
+                print(f"[ai]: {msg.content}")
+                found_text = True
+            elif isinstance(msg.content, list):
+                for block in msg.content:
+                    btype = block.get("type") if isinstance(block, dict) else getattr(block, "type", None)
+                    if btype == "text":
+                        text = block.get("text") if isinstance(block, dict) else block.text
+                        print(f"[ai]: {text}")
+                        found_text = True
+                    elif btype == "tool_use":
+                        name = block.get("name") if isinstance(block, dict) else getattr(block, "name", "?")
+                        print(f"[tool]: called {name}")
+        elif msg.type == "tool" and msg.content:
+            content = str(msg.content)
+            if len(content) > 300:
+                content = content[:300] + "..."
+            print(f"[result]: {content}")
+        sys.stdout.flush()
+
+    if not found_text:
+        print("[ai]: (no text response — agent only performed actions)")
+
+    # Keep full conversation history
+    messages = result_msgs
