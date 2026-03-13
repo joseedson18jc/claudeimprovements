@@ -50,7 +50,7 @@ while True:
 
     messages.append({"role": "user", "content": user_input})
 
-    print()
+    print("\n[thinking...]")
 
     # Use invoke with streaming callback approach - simpler and more reliable
     result = agent.invoke({"messages": messages})
