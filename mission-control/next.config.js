@@ -7,6 +7,8 @@ const nextConfig = {
     '/*': ['./.data/**/*'],
   },
   turbopack: {},
+  // Allow cross-origin dev requests from reverse proxies (ngrok, Tailscale, LAN)
+  allowedDevOrigins: ['*.ngrok-free.dev', '*.ngrok.io', '*.ts.net'],
   // Transpile ESM-only packages so they resolve correctly in all environments
   transpilePackages: ['react-markdown', 'remark-gfm'],
   

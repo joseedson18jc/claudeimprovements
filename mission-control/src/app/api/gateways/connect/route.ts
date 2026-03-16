@@ -83,9 +83,13 @@ function resolveRemoteGatewayUrl(
     }
   }
 
-  // No Tailscale Serve — try direct connection to dashboard host on gateway port
+  // No Tailscale Serve — use the built-in /gw WebSocket proxy.
+  // When Mission Control is behind a tunnel or reverse proxy (e.g. ngrok) that only
+  // forwards a single port, the browser cannot reach the gateway directly on its
+  // separate port. The /gw path on the custom server proxies WebSocket connections
+  // to the local gateway so everything goes through the same port.
   const protocol = inferBrowserProtocol(request) === 'https:' ? 'wss' : 'ws'
-  return `${protocol}://${browserHost}:${gateway.port}`
+  return `${protocol}://${browserHost}/gw`
 }
 
 function ensureTable(db: ReturnType<typeof getDatabase>) {
