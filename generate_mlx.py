@@ -12,7 +12,7 @@ if platform.system() != "Darwin" or platform.machine() != "arm64":
 
 from mlx_lm import load, generate
 
-model, tokenizer = load("lukey03/Qwen3.5-9B-abliterated-MLX-4bit")
+model, tokenizer = load("mlx-community/Qwen2.5-7B-Instruct-4bit")
 
 prompt = "Write a story about Einstein"
 messages = [{"role": "user", "content": prompt}]
