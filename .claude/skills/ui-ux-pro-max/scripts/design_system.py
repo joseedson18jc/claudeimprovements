@@ -11,8 +11,11 @@ Usage:
 
 import csv
 import json
+import re
 from pathlib import Path
 from core import search, DATA_DIR
+
+OUTPUT_FORMATS = ("ascii", "markdown", "json")
 
 
 # ============ CONFIGURATION ============
@@ -233,6 +236,25 @@ class DesignSystemGenerator:
 # ============ OUTPUT FORMATTERS ============
 BOX_WIDTH = 90  # Wider box for more content
 
+
+def _split_sections(text: str) -> list:
+    """Split a section-order string into individual section names.
+
+    landing.csv stores section orders as numbered, comma-delimited text
+    ("1. Hero, 2. Value prop, 3. CTA"); the built-in fallback uses "A > B > C".
+    Both forms are handled, and any leading "N." numbering is stripped because
+    the formatters re-number the list themselves.
+    """
+    if not text:
+        return []
+    if ">" in text:
+        parts = text.split(">")
+    else:
+        parts = re.split(r",\s*(?=\d+\.\s)", text)
+    cleaned = [re.sub(r"^\s*\d+\.\s*", "", part).strip() for part in parts]
+    return [part for part in cleaned if part]
+
+
 def format_ascii_box(design_system: dict) -> str:
     """Format design system as ASCII box with emojis (MCP-style)."""
     project = design_system.get("project_name", "PROJECT")
@@ -250,7 +272,15 @@ def format_ascii_box(design_system: dict) -> str:
         words = text.split()
         lines = []
         current_line = prefix
+        available = width - 2 - len(prefix)
         for word in words:
+            # Hard-split tokens with no break opportunity (URLs, @import strings) so no row overflows the box.
+            while len(word) > available:
+                if current_line != prefix:
+                    lines.append(current_line)
+                    current_line = prefix
+                lines.append(prefix + word[:available])
+                word = word[available:]
             if len(current_line) + len(word) + 1 <= width - 2:
                 current_line += (" " if current_line != prefix else "") + word
             else:
@@ -262,8 +292,7 @@ def format_ascii_box(design_system: dict) -> str:
         return lines
 
     # Build sections from pattern
-    sections = pattern.get("sections", "").split(">")
-    sections = [s.strip() for s in sections if s.strip()]
+    sections = _split_sections(pattern.get("sections", ""))
 
     # Build output lines
     lines = []
@@ -272,7 +301,7 @@ def format_ascii_box(design_system: dict) -> str:
     lines.append("+" + "-" * w + "+")
     lines.append(f"|  TARGET: {project} - RECOMMENDED DESIGN SYSTEM".ljust(BOX_WIDTH) + "|")
     lines.append("+" + "-" * w + "+")
-    lines.append("|" + " " * BOX_WIDTH + "|")
+    lines.append("|" + " " * (BOX_WIDTH - 1) + "|")
 
     # Pattern section
     lines.append(f"|  PATTERN: {pattern.get('name', '')}".ljust(BOX_WIDTH) + "|")
@@ -283,7 +312,7 @@ def format_ascii_box(design_system: dict) -> str:
     lines.append("|     Sections:".ljust(BOX_WIDTH) + "|")
     for i, section in enumerate(sections, 1):
         lines.append(f"|       {i}. {section}".ljust(BOX_WIDTH) + "|")
-    lines.append("|" + " " * BOX_WIDTH + "|")
+    lines.append("|" + " " * (BOX_WIDTH - 1) + "|")
 
     # Style section
     lines.append(f"|  STYLE: {style.get('name', '')}".ljust(BOX_WIDTH) + "|")
@@ -296,7 +325,7 @@ def format_ascii_box(design_system: dict) -> str:
     if style.get("performance") or style.get("accessibility"):
         perf_a11y = f"Performance: {style.get('performance', '')} | Accessibility: {style.get('accessibility', '')}"
         lines.append(f"|     {perf_a11y}".ljust(BOX_WIDTH) + "|")
-    lines.append("|" + " " * BOX_WIDTH + "|")
+    lines.append("|" + " " * (BOX_WIDTH - 1) + "|")
 
     # Colors section
     lines.append("|  COLORS:".ljust(BOX_WIDTH) + "|")
@@ -308,7 +337,7 @@ def format_ascii_box(design_system: dict) -> str:
     if colors.get("notes"):
         for line in wrap_text(f"Notes: {colors.get('notes', '')}", "|     ", BOX_WIDTH):
             lines.append(line.ljust(BOX_WIDTH) + "|")
-    lines.append("|" + " " * BOX_WIDTH + "|")
+    lines.append("|" + " " * (BOX_WIDTH - 1) + "|")
 
     # Typography section
     lines.append(f"|  TYPOGRAPHY: {typography.get('heading', '')} / {typography.get('body', '')}".ljust(BOX_WIDTH) + "|")
@@ -319,24 +348,26 @@ def format_ascii_box(design_system: dict) -> str:
         for line in wrap_text(f"Best For: {typography.get('best_for', '')}", "|     ", BOX_WIDTH):
             lines.append(line.ljust(BOX_WIDTH) + "|")
     if typography.get("google_fonts_url"):
-        lines.append(f"|     Google Fonts: {typography.get('google_fonts_url', '')}".ljust(BOX_WIDTH) + "|")
+        for line in wrap_text(f"Google Fonts: {typography.get('google_fonts_url', '')}", "|     ", BOX_WIDTH):
+            lines.append(line.ljust(BOX_WIDTH) + "|")
     if typography.get("css_import"):
-        lines.append(f"|     CSS Import: {typography.get('css_import', '')[:70]}...".ljust(BOX_WIDTH) + "|")
-    lines.append("|" + " " * BOX_WIDTH + "|")
+        for line in wrap_text(f"CSS Import: {typography.get('css_import', '')}", "|     ", BOX_WIDTH):
+            lines.append(line.ljust(BOX_WIDTH) + "|")
+    lines.append("|" + " " * (BOX_WIDTH - 1) + "|")
 
     # Key Effects section
     if effects:
         lines.append("|  KEY EFFECTS:".ljust(BOX_WIDTH) + "|")
         for line in wrap_text(effects, "|     ", BOX_WIDTH):
             lines.append(line.ljust(BOX_WIDTH) + "|")
-        lines.append("|" + " " * BOX_WIDTH + "|")
+        lines.append("|" + " " * (BOX_WIDTH - 1) + "|")
 
     # Anti-patterns section
     if anti_patterns:
         lines.append("|  AVOID (Anti-patterns):".ljust(BOX_WIDTH) + "|")
         for line in wrap_text(anti_patterns, "|     ", BOX_WIDTH):
             lines.append(line.ljust(BOX_WIDTH) + "|")
-        lines.append("|" + " " * BOX_WIDTH + "|")
+        lines.append("|" + " " * (BOX_WIDTH - 1) + "|")
 
     # Pre-Delivery Checklist section
     lines.append("|  PRE-DELIVERY CHECKLIST:".ljust(BOX_WIDTH) + "|")
@@ -351,7 +382,7 @@ def format_ascii_box(design_system: dict) -> str:
     ]
     for item in checklist_items:
         lines.append(f"|     {item}".ljust(BOX_WIDTH) + "|")
-    lines.append("|" + " " * BOX_WIDTH + "|")
+    lines.append("|" + " " * (BOX_WIDTH - 1) + "|")
 
     lines.append("+" + "-" * w + "+")
 
@@ -381,7 +412,11 @@ def format_markdown(design_system: dict) -> str:
         lines.append(f"- **CTA Placement:** {pattern.get('cta_placement', '')}")
     if pattern.get('color_strategy'):
         lines.append(f"- **Color Strategy:** {pattern.get('color_strategy', '')}")
-    lines.append(f"- **Sections:** {pattern.get('sections', '')}")
+    sections = _split_sections(pattern.get("sections", ""))
+    if sections:
+        lines.append("- **Sections:**")
+        for i, section in enumerate(sections, 1):
+            lines.append(f"  {i}. {section}")
     lines.append("")
 
     # Style section
@@ -453,6 +488,11 @@ def format_markdown(design_system: dict) -> str:
 
 
 # ============ MAIN ENTRY POINT ============
+def build_design_system(query: str, project_name: str = None) -> dict:
+    """Generate the design system recommendation as a plain dict (no formatting)."""
+    return DesignSystemGenerator().generate(query, project_name)
+
+
 def generate_design_system(query: str, project_name: str = None, output_format: str = "ascii") -> str:
     """
     Main entry point for design system generation.
@@ -460,14 +500,18 @@ def generate_design_system(query: str, project_name: str = None, output_format: 
     Args:
         query: Search query (e.g., "SaaS dashboard", "e-commerce luxury")
         project_name: Optional project name for output header
-        output_format: "ascii" (default) or "markdown"
+        output_format: "ascii" (default), "markdown" or "json"
 
     Returns:
         Formatted design system string
     """
-    generator = DesignSystemGenerator()
-    design_system = generator.generate(query, project_name)
+    if output_format not in OUTPUT_FORMATS:
+        raise ValueError(f"Unknown output format: {output_format}. Expected one of {', '.join(OUTPUT_FORMATS)}")
 
+    design_system = build_design_system(query, project_name)
+
+    if output_format == "json":
+        return json.dumps(design_system, indent=2, ensure_ascii=False)
     if output_format == "markdown":
         return format_markdown(design_system)
     return format_ascii_box(design_system)
@@ -480,7 +524,7 @@ if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="Generate Design System")
     parser.add_argument("query", help="Search query (e.g., 'SaaS dashboard')")
     parser.add_argument("--project-name", "-p", type=str, default=None, help="Project name")
-    parser.add_argument("--format", "-f", choices=["ascii", "markdown"], default="ascii", help="Output format")
+    parser.add_argument("--format", "-f", choices=list(OUTPUT_FORMATS), default="ascii", help="Output format")
 
     args = parser.parse_args()
 

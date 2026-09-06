@@ -169,6 +169,9 @@ def _search_csv(filepath, search_cols, output_cols, query, max_results):
     """Core search function using BM25"""
     if not filepath.exists():
         return []
+    if max_results < 0:
+        # A negative slice bound would quietly return "everything but the last N" rows.
+        raise ValueError(f"max_results must be >= 0, got {max_results}")
 
     data = _load_csv(filepath)
 
