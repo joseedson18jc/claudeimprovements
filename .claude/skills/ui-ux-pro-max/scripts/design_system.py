@@ -432,8 +432,8 @@ def format_markdown(design_system: dict) -> str:
 
     # Colors section
     lines.append("### Colors")
-    lines.append(f"| Role | Hex |")
-    lines.append(f"|------|-----|")
+    lines.append("| Role | Hex |")
+    lines.append("|------|-----|")
     lines.append(f"| Primary | {colors.get('primary', '')} |")
     lines.append(f"| Secondary | {colors.get('secondary', '')} |")
     lines.append(f"| CTA | {colors.get('cta', '')} |")
@@ -454,10 +454,10 @@ def format_markdown(design_system: dict) -> str:
     if typography.get("google_fonts_url"):
         lines.append(f"- **Google Fonts:** {typography.get('google_fonts_url', '')}")
     if typography.get("css_import"):
-        lines.append(f"- **CSS Import:**")
-        lines.append(f"```css")
+        lines.append("- **CSS Import:**")
+        lines.append("```css")
         lines.append(f"{typography.get('css_import', '')}")
-        lines.append(f"```")
+        lines.append("```")
     lines.append("")
 
     # Key Effects section
