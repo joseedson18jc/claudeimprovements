@@ -1,0 +1,631 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Stitch - Crypto Dashboard Project</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: { sans: ['Inter', 'system-ui', 'sans-serif'] },
+          colors: {
+            stitch: {
+              bg: '#191a1f',
+              surface: '#25262b',
+              card: '#2b2c31',
+              elevated: '#35363b',
+              accent: '#1a73e8',
+              'accent-hover': '#4285f4',
+            }
+          }
+        }
+      }
+    }
+  </script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body class="bg-stitch-bg text-white font-sans">
+
+  <!-- ===== HEADER ===== -->
+  <header class="fixed top-0 left-0 right-0 h-14 bg-stitch-surface border-b border-white/10 flex items-center justify-between px-4 z-50">
+    <!-- Left -->
+    <div class="flex items-center gap-3">
+      <div class="flex items-center gap-2">
+        <div class="w-7 h-7 rounded-lg bg-gradient-to-br from-blue-500 to-purple-600 flex items-center justify-center">
+          <span class="material-symbols-outlined text-white" style="font-size:16px">diamond</span>
+        </div>
+        <span class="font-semibold text-sm tracking-tight">Stitch</span>
+      </div>
+      <div class="w-px h-6 bg-white/10"></div>
+      <button class="p-1.5 rounded-lg hover:bg-white/10 transition-colors" aria-label="Go back">
+        <span class="material-symbols-outlined text-gray-400" style="font-size:18px">arrow_back</span>
+      </button>
+      <span class="text-sm font-medium text-gray-200">Crypto Dashboard</span>
+      <span class="text-xs text-gray-500 ml-1">5 screens</span>
+    </div>
+
+    <!-- Center: Mode Toggle -->
+    <div class="mode-toggle relative flex items-center bg-stitch-bg rounded-full p-0.5 border border-white/10">
+      <div id="mode-indicator" class="indicator absolute top-0.5 left-0.5 w-1/2 h-[calc(100%-4px)] bg-stitch-elevated rounded-full"></div>
+      <button id="mode-standard" class="relative z-10 px-4 py-1.5 text-xs font-medium text-white rounded-full transition-colors">Standard</button>
+      <button id="mode-experimental" class="relative z-10 px-4 py-1.5 text-xs font-medium text-gray-400 rounded-full transition-colors">Experimental</button>
+    </div>
+
+    <!-- Right -->
+    <div class="flex items-center gap-2">
+      <button class="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-medium text-gray-300 hover:bg-white/10 transition-colors border border-white/10">
+        <span class="material-symbols-outlined" style="font-size:16px">share</span>
+        Share
+      </button>
+      <button class="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-medium text-gray-300 hover:bg-white/10 transition-colors border border-white/10">
+        <span class="material-symbols-outlined" style="font-size:16px">download</span>
+        Export
+      </button>
+      <button class="flex items-center gap-1.5 px-4 py-1.5 rounded-lg text-xs font-medium text-white bg-stitch-accent hover:bg-stitch-accent-hover transition-colors">
+        <span class="material-symbols-outlined" style="font-size:16px">play_arrow</span>
+        Play
+      </button>
+      <div class="w-8 h-8 rounded-full bg-gradient-to-br from-green-400 to-blue-500 flex items-center justify-center text-xs font-bold ml-1">J</div>
+    </div>
+  </header>
+
+  <!-- ===== MAIN LAYOUT ===== -->
+  <div class="flex pt-14 h-screen">
+
+    <!-- ===== SIDEBAR ===== -->
+    <aside id="sidebar" class="sidebar-transition sidebar-expanded flex-shrink-0 bg-stitch-surface border-r border-white/10 flex flex-col" style="width:240px">
+      <!-- Toggle -->
+      <div class="p-3 flex items-center justify-between border-b border-white/10">
+        <div class="flex items-center gap-2">
+          <span class="material-symbols-outlined text-gray-400" style="font-size:20px">layers</span>
+          <span class="sidebar-label text-xs font-medium text-gray-300">Screens</span>
+        </div>
+        <button id="sidebar-toggle" class="p-1 rounded hover:bg-white/10 transition-colors" aria-label="Toggle sidebar">
+          <span class="material-symbols-outlined text-gray-500" style="font-size:18px">menu</span>
+        </button>
+      </div>
+
+      <!-- Screen thumbnails -->
+      <div class="flex-1 overflow-y-auto p-2 space-y-1.5">
+        <button class="sidebar-thumb w-full flex items-center gap-2.5 p-2 rounded-lg hover:bg-white/5 transition-colors text-left" data-index="0">
+          <div class="w-10 h-14 rounded-md bg-stitch-card border border-white/10 flex-shrink-0 flex items-center justify-center overflow-hidden">
+            <div class="w-full h-full bg-gradient-to-b from-blue-900/40 to-stitch-card p-1"><div class="w-full h-1 bg-blue-500/30 rounded mb-0.5"></div><div class="w-3/4 h-0.5 bg-white/10 rounded"></div></div>
+          </div>
+          <div class="sidebar-label"><div class="text-xs font-medium text-gray-200">Home</div><div class="text-[10px] text-gray-500">Main dashboard</div></div>
+        </button>
+        <button class="sidebar-thumb w-full flex items-center gap-2.5 p-2 rounded-lg hover:bg-white/5 transition-colors text-left" data-index="1">
+          <div class="w-10 h-14 rounded-md bg-stitch-card border border-white/10 flex-shrink-0 flex items-center justify-center overflow-hidden">
+            <div class="w-full h-full p-1"><div class="w-5 h-5 rounded-full border-2 border-green-500/50 mx-auto mt-1"></div></div>
+          </div>
+          <div class="sidebar-label"><div class="text-xs font-medium text-gray-200">Portfolio</div><div class="text-[10px] text-gray-500">Asset breakdown</div></div>
+        </button>
+        <button class="sidebar-thumb w-full flex items-center gap-2.5 p-2 rounded-lg hover:bg-white/5 transition-colors text-left" data-index="2">
+          <div class="w-10 h-14 rounded-md bg-stitch-card border border-white/10 flex-shrink-0 flex items-center justify-center overflow-hidden">
+            <div class="w-full h-full p-1"><div class="w-full h-3 bg-green-500/20 rounded mt-2"></div><div class="flex gap-0.5 mt-1"><div class="flex-1 h-1.5 bg-green-500/30 rounded"></div><div class="flex-1 h-1.5 bg-red-500/30 rounded"></div></div></div>
+          </div>
+          <div class="sidebar-label"><div class="text-xs font-medium text-gray-200">Trade</div><div class="text-[10px] text-gray-500">Buy &amp; sell</div></div>
+        </button>
+        <button class="sidebar-thumb w-full flex items-center gap-2.5 p-2 rounded-lg hover:bg-white/5 transition-colors text-left" data-index="3">
+          <div class="w-10 h-14 rounded-md bg-stitch-card border border-white/10 flex-shrink-0 flex items-center justify-center overflow-hidden">
+            <div class="w-full h-full p-1"><div class="grid grid-cols-2 gap-0.5 mt-1"><div class="h-2 bg-purple-500/20 rounded"></div><div class="h-2 bg-blue-500/20 rounded"></div><div class="h-2 bg-yellow-500/20 rounded"></div><div class="h-2 bg-green-500/20 rounded"></div></div></div>
+          </div>
+          <div class="sidebar-label"><div class="text-xs font-medium text-gray-200">Analytics</div><div class="text-[10px] text-gray-500">Market data</div></div>
+        </button>
+        <button class="sidebar-thumb w-full flex items-center gap-2.5 p-2 rounded-lg hover:bg-white/5 transition-colors text-left" data-index="4">
+          <div class="w-10 h-14 rounded-md bg-stitch-card border border-white/10 flex-shrink-0 flex items-center justify-center overflow-hidden">
+            <div class="w-full h-full p-1"><div class="w-4 h-4 rounded-full bg-gray-600/50 mx-auto mt-1"></div><div class="w-full h-0.5 bg-white/10 rounded mt-1.5"></div><div class="w-full h-0.5 bg-white/10 rounded mt-0.5"></div></div>
+          </div>
+          <div class="sidebar-label"><div class="text-xs font-medium text-gray-200">Settings</div><div class="text-[10px] text-gray-500">Preferences</div></div>
+        </button>
+      </div>
+
+      <!-- Sidebar footer -->
+      <div class="p-3 border-t border-white/10 space-y-1">
+        <button class="w-full flex items-center gap-2.5 p-2 rounded-lg hover:bg-white/5 transition-colors">
+          <span class="material-symbols-outlined text-gray-500" style="font-size:18px">add_circle</span>
+          <span class="sidebar-label text-xs text-gray-400">Add screen</span>
+        </button>
+        <button class="w-full flex items-center gap-2.5 p-2 rounded-lg hover:bg-white/5 transition-colors">
+          <span class="material-symbols-outlined text-gray-500" style="font-size:18px">settings</span>
+          <span class="sidebar-label text-xs text-gray-400">Settings</span>
+        </button>
+      </div>
+    </aside>
+
+    <!-- ===== CANVAS ===== -->
+    <main id="canvas-area" class="flex-1 relative overflow-auto">
+      <!-- Zoom controls -->
+      <div class="absolute top-4 right-4 z-30 flex items-center gap-1 glass-panel rounded-lg px-2 py-1">
+        <button id="zoom-out" class="p-1 rounded hover:bg-white/10 transition-colors" aria-label="Zoom out">
+          <span class="material-symbols-outlined text-gray-400" style="font-size:18px">remove</span>
+        </button>
+        <span id="zoom-label" class="text-xs font-medium text-gray-300 w-10 text-center select-none">100%</span>
+        <button id="zoom-in" class="p-1 rounded hover:bg-white/10 transition-colors" aria-label="Zoom in">
+          <span class="material-symbols-outlined text-gray-400" style="font-size:18px">add</span>
+        </button>
+      </div>
+
+      <!-- Canvas inner (scalable) -->
+      <div id="canvas-inner" class="canvas-scale flex items-start gap-10 p-16 pb-40 min-w-max">
+
+        <!-- ===== SCREEN 1: HOME ===== -->
+        <div class="screen-card w-[320px] rounded-2xl bg-stitch-card border border-white/10 shadow-2xl overflow-hidden cursor-pointer flex-shrink-0">
+          <div class="p-1 text-center">
+            <span class="text-[10px] text-gray-500">Home</span>
+          </div>
+          <div class="bg-[#1a1b20] rounded-xl mx-1.5 mb-1.5 overflow-hidden">
+            <!-- Status bar -->
+            <div class="flex items-center justify-between px-4 pt-2 pb-1">
+              <span class="text-[10px] text-gray-400 font-medium">9:41</span>
+              <div class="flex items-center gap-1">
+                <div class="w-3 h-2 border border-gray-500 rounded-sm"><div class="w-1.5 h-full bg-green-400 rounded-sm"></div></div>
+              </div>
+            </div>
+            <!-- Greeting -->
+            <div class="px-4 pt-2">
+              <p class="text-[10px] text-gray-500">Good morning</p>
+              <p class="text-sm font-semibold">Alex Johnson</p>
+            </div>
+            <!-- Balance card -->
+            <div class="mx-4 mt-3 p-3 rounded-xl bg-gradient-to-br from-blue-600/30 to-purple-600/20 border border-white/10">
+              <p class="text-[10px] text-gray-400">Total Balance</p>
+              <p class="text-xl font-bold mt-0.5">$24,531.82</p>
+              <div class="flex items-center gap-1 mt-1">
+                <span class="text-[10px] font-medium text-green-400">+2.4%</span>
+                <span class="text-[10px] text-gray-500">today</span>
+              </div>
+              <!-- Sparkline -->
+              <svg class="w-full h-8 mt-2" viewBox="0 0 200 30" fill="none">
+                <defs>
+                  <linearGradient id="spark1" x1="0" y1="0" x2="0" y2="1">
+                    <stop offset="0%" stop-color="#3b82f6" stop-opacity="0.3"/>
+                    <stop offset="100%" stop-color="#3b82f6" stop-opacity="0"/>
+                  </linearGradient>
+                </defs>
+                <path d="M0,20 Q20,18 40,15 T80,12 T120,8 T160,14 T200,6" stroke="#3b82f6" stroke-width="1.5" fill="none"/>
+                <path d="M0,20 Q20,18 40,15 T80,12 T120,8 T160,14 T200,6 V30 H0 Z" fill="url(#spark1)"/>
+              </svg>
+            </div>
+            <!-- Coin list -->
+            <div class="px-4 mt-3 space-y-2 pb-2">
+              <div class="flex items-center justify-between p-2 rounded-lg bg-white/5">
+                <div class="flex items-center gap-2">
+                  <div class="w-6 h-6 rounded-full bg-orange-500 flex items-center justify-center text-[8px] font-bold">B</div>
+                  <div><p class="text-[10px] font-medium">Bitcoin</p><p class="text-[8px] text-gray-500">BTC</p></div>
+                </div>
+                <div class="text-right">
+                  <p class="text-[10px] font-medium">$67,234</p>
+                  <p class="text-[8px] text-green-400">+1.8%</p>
+                </div>
+              </div>
+              <div class="flex items-center justify-between p-2 rounded-lg bg-white/5">
+                <div class="flex items-center gap-2">
+                  <div class="w-6 h-6 rounded-full bg-blue-500 flex items-center justify-center text-[8px] font-bold">E</div>
+                  <div><p class="text-[10px] font-medium">Ethereum</p><p class="text-[8px] text-gray-500">ETH</p></div>
+                </div>
+                <div class="text-right">
+                  <p class="text-[10px] font-medium">$3,421</p>
+                  <p class="text-[8px] text-red-400">-0.3%</p>
+                </div>
+              </div>
+              <div class="flex items-center justify-between p-2 rounded-lg bg-white/5">
+                <div class="flex items-center gap-2">
+                  <div class="w-6 h-6 rounded-full bg-purple-500 flex items-center justify-center text-[8px] font-bold">S</div>
+                  <div><p class="text-[10px] font-medium">Solana</p><p class="text-[8px] text-gray-500">SOL</p></div>
+                </div>
+                <div class="text-right">
+                  <p class="text-[10px] font-medium">$142.50</p>
+                  <p class="text-[8px] text-green-400">+5.2%</p>
+                </div>
+              </div>
+            </div>
+            <!-- Bottom tab bar -->
+            <div class="flex items-center justify-around py-2 border-t border-white/10 bg-[#1a1b20]">
+              <div class="flex flex-col items-center gap-0.5"><span class="material-symbols-outlined text-blue-400" style="font-size:16px">home</span><span class="text-[7px] text-blue-400">Home</span></div>
+              <div class="flex flex-col items-center gap-0.5"><span class="material-symbols-outlined text-gray-600" style="font-size:16px">pie_chart</span><span class="text-[7px] text-gray-600">Portfolio</span></div>
+              <div class="flex flex-col items-center gap-0.5"><span class="material-symbols-outlined text-gray-600" style="font-size:16px">swap_horiz</span><span class="text-[7px] text-gray-600">Trade</span></div>
+              <div class="flex flex-col items-center gap-0.5"><span class="material-symbols-outlined text-gray-600" style="font-size:16px">account_balance_wallet</span><span class="text-[7px] text-gray-600">Wallet</span></div>
+              <div class="flex flex-col items-center gap-0.5"><span class="material-symbols-outlined text-gray-600" style="font-size:16px">settings</span><span class="text-[7px] text-gray-600">Settings</span></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- ===== SCREEN 2: PORTFOLIO ===== -->
+        <div class="screen-card w-[320px] rounded-2xl bg-stitch-card border border-white/10 shadow-2xl overflow-hidden cursor-pointer flex-shrink-0">
+          <div class="p-1 text-center">
+            <span class="text-[10px] text-gray-500">Portfolio</span>
+          </div>
+          <div class="bg-[#1a1b20] rounded-xl mx-1.5 mb-1.5 overflow-hidden">
+            <div class="flex items-center justify-between px-4 pt-2 pb-1">
+              <span class="text-[10px] text-gray-400 font-medium">9:41</span>
+              <div class="flex items-center gap-1"><div class="w-3 h-2 border border-gray-500 rounded-sm"><div class="w-1.5 h-full bg-green-400 rounded-sm"></div></div></div>
+            </div>
+            <div class="px-4 pt-2">
+              <p class="text-sm font-semibold">Portfolio</p>
+              <p class="text-[10px] text-gray-500 mt-0.5">Asset allocation</p>
+            </div>
+            <!-- Donut chart -->
+            <div class="flex justify-center py-4">
+              <div class="relative">
+                <svg width="120" height="120" viewBox="0 0 120 120">
+                  <circle cx="60" cy="60" r="45" fill="none" stroke="#f97316" stroke-width="14" stroke-dasharray="127 283" stroke-dashoffset="0" transform="rotate(-90 60 60)"/>
+                  <circle cx="60" cy="60" r="45" fill="none" stroke="#3b82f6" stroke-width="14" stroke-dasharray="85 283" stroke-dashoffset="-127" transform="rotate(-90 60 60)"/>
+                  <circle cx="60" cy="60" r="45" fill="none" stroke="#a855f7" stroke-width="14" stroke-dasharray="42 283" stroke-dashoffset="-212" transform="rotate(-90 60 60)"/>
+                  <circle cx="60" cy="60" r="45" fill="none" stroke="#6b7280" stroke-width="14" stroke-dasharray="29 283" stroke-dashoffset="-254" transform="rotate(-90 60 60)"/>
+                </svg>
+                <div class="absolute inset-0 flex flex-col items-center justify-center">
+                  <span class="text-xs font-bold">$24.5K</span>
+                  <span class="text-[8px] text-gray-500">Total</span>
+                </div>
+              </div>
+            </div>
+            <!-- Legend -->
+            <div class="px-4 grid grid-cols-2 gap-2">
+              <div class="flex items-center gap-1.5"><div class="w-2 h-2 rounded-full bg-orange-500"></div><span class="text-[10px] text-gray-300">BTC 45%</span></div>
+              <div class="flex items-center gap-1.5"><div class="w-2 h-2 rounded-full bg-blue-500"></div><span class="text-[10px] text-gray-300">ETH 30%</span></div>
+              <div class="flex items-center gap-1.5"><div class="w-2 h-2 rounded-full bg-purple-500"></div><span class="text-[10px] text-gray-300">SOL 15%</span></div>
+              <div class="flex items-center gap-1.5"><div class="w-2 h-2 rounded-full bg-gray-500"></div><span class="text-[10px] text-gray-300">Other 10%</span></div>
+            </div>
+            <!-- Holdings -->
+            <div class="px-4 mt-3 space-y-1.5 pb-3">
+              <p class="text-[10px] text-gray-500 font-medium">Holdings</p>
+              <div class="flex items-center justify-between p-2 rounded-lg bg-white/5">
+                <div class="flex items-center gap-2">
+                  <div class="w-5 h-5 rounded-full bg-orange-500 flex items-center justify-center text-[7px] font-bold">B</div>
+                  <div><p class="text-[10px] font-medium">Bitcoin</p><p class="text-[8px] text-gray-500">0.164 BTC</p></div>
+                </div>
+                <p class="text-[10px] font-medium">$11,039</p>
+              </div>
+              <div class="flex items-center justify-between p-2 rounded-lg bg-white/5">
+                <div class="flex items-center gap-2">
+                  <div class="w-5 h-5 rounded-full bg-blue-500 flex items-center justify-center text-[7px] font-bold">E</div>
+                  <div><p class="text-[10px] font-medium">Ethereum</p><p class="text-[8px] text-gray-500">2.15 ETH</p></div>
+                </div>
+                <p class="text-[10px] font-medium">$7,359</p>
+              </div>
+              <div class="flex items-center justify-between p-2 rounded-lg bg-white/5">
+                <div class="flex items-center gap-2">
+                  <div class="w-5 h-5 rounded-full bg-purple-500 flex items-center justify-center text-[7px] font-bold">S</div>
+                  <div><p class="text-[10px] font-medium">Solana</p><p class="text-[8px] text-gray-500">25.8 SOL</p></div>
+                </div>
+                <p class="text-[10px] font-medium">$3,677</p>
+              </div>
+            </div>
+            <!-- Bottom tab bar -->
+            <div class="flex items-center justify-around py-2 border-t border-white/10">
+              <div class="flex flex-col items-center gap-0.5"><span class="material-symbols-outlined text-gray-600" style="font-size:16px">home</span><span class="text-[7px] text-gray-600">Home</span></div>
+              <div class="flex flex-col items-center gap-0.5"><span class="material-symbols-outlined text-blue-400" style="font-size:16px">pie_chart</span><span class="text-[7px] text-blue-400">Portfolio</span></div>
+              <div class="flex flex-col items-center gap-0.5"><span class="material-symbols-outlined text-gray-600" style="font-size:16px">swap_horiz</span><span class="text-[7px] text-gray-600">Trade</span></div>
+              <div class="flex flex-col items-center gap-0.5"><span class="material-symbols-outlined text-gray-600" style="font-size:16px">account_balance_wallet</span><span class="text-[7px] text-gray-600">Wallet</span></div>
+              <div class="flex flex-col items-center gap-0.5"><span class="material-symbols-outlined text-gray-600" style="font-size:16px">settings</span><span class="text-[7px] text-gray-600">Settings</span></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- ===== SCREEN 3: TRADE ===== -->
+        <div class="screen-card w-[320px] rounded-2xl bg-stitch-card border border-white/10 shadow-2xl overflow-hidden cursor-pointer flex-shrink-0">
+          <div class="p-1 text-center">
+            <span class="text-[10px] text-gray-500">Trade</span>
+          </div>
+          <div class="bg-[#1a1b20] rounded-xl mx-1.5 mb-1.5 overflow-hidden">
+            <div class="flex items-center justify-between px-4 pt-2 pb-1">
+              <span class="text-[10px] text-gray-400 font-medium">9:41</span>
+              <div class="flex items-center gap-1"><div class="w-3 h-2 border border-gray-500 rounded-sm"><div class="w-1.5 h-full bg-green-400 rounded-sm"></div></div></div>
+            </div>
+            <!-- Pair header -->
+            <div class="px-4 pt-2 flex items-center justify-between">
+              <div>
+                <p class="text-sm font-semibold">BTC / USDT</p>
+                <p class="text-[10px] text-green-400">$67,234.50 <span class="text-gray-500">+1.82%</span></p>
+              </div>
+              <div class="flex items-center gap-1">
+                <span class="material-symbols-outlined text-gray-500" style="font-size:16px">candlestick_chart</span>
+                <span class="material-symbols-outlined text-gray-500" style="font-size:16px">show_chart</span>
+              </div>
+            </div>
+            <!-- Chart area -->
+            <div class="px-4 py-3">
+              <svg class="w-full h-28" viewBox="0 0 280 100" fill="none">
+                <defs>
+                  <linearGradient id="chartGrad" x1="0" y1="0" x2="0" y2="1">
+                    <stop offset="0%" stop-color="#34a853" stop-opacity="0.2"/>
+                    <stop offset="100%" stop-color="#34a853" stop-opacity="0"/>
+                  </linearGradient>
+                </defs>
+                <!-- Candlestick-like bars -->
+                <rect x="10" y="40" width="6" height="30" rx="1" fill="#34a853" opacity="0.8"/>
+                <rect x="22" y="35" width="6" height="40" rx="1" fill="#34a853" opacity="0.8"/>
+                <rect x="34" y="45" width="6" height="20" rx="1" fill="#ea4335" opacity="0.8"/>
+                <rect x="46" y="30" width="6" height="35" rx="1" fill="#34a853" opacity="0.8"/>
+                <rect x="58" y="50" width="6" height="25" rx="1" fill="#ea4335" opacity="0.8"/>
+                <rect x="70" y="25" width="6" height="45" rx="1" fill="#34a853" opacity="0.8"/>
+                <rect x="82" y="20" width="6" height="50" rx="1" fill="#34a853" opacity="0.8"/>
+                <rect x="94" y="35" width="6" height="30" rx="1" fill="#ea4335" opacity="0.8"/>
+                <rect x="106" y="28" width="6" height="42" rx="1" fill="#34a853" opacity="0.8"/>
+                <rect x="118" y="40" width="6" height="20" rx="1" fill="#ea4335" opacity="0.8"/>
+                <rect x="130" y="22" width="6" height="48" rx="1" fill="#34a853" opacity="0.8"/>
+                <rect x="142" y="15" width="6" height="55" rx="1" fill="#34a853" opacity="0.8"/>
+                <rect x="154" y="30" width="6" height="35" rx="1" fill="#ea4335" opacity="0.8"/>
+                <rect x="166" y="18" width="6" height="42" rx="1" fill="#34a853" opacity="0.8"/>
+                <rect x="178" y="25" width="6" height="38" rx="1" fill="#34a853" opacity="0.8"/>
+                <rect x="190" y="35" width="6" height="28" rx="1" fill="#ea4335" opacity="0.8"/>
+                <rect x="202" y="12" width="6" height="50" rx="1" fill="#34a853" opacity="0.8"/>
+                <rect x="214" y="20" width="6" height="40" rx="1" fill="#34a853" opacity="0.8"/>
+                <rect x="226" y="30" width="6" height="25" rx="1" fill="#ea4335" opacity="0.8"/>
+                <rect x="238" y="10" width="6" height="55" rx="1" fill="#34a853" opacity="0.8"/>
+                <rect x="250" y="15" width="6" height="45" rx="1" fill="#34a853" opacity="0.8"/>
+                <rect x="262" y="8" width="6" height="50" rx="1" fill="#34a853" opacity="0.8"/>
+              </svg>
+            </div>
+            <!-- Time range pills -->
+            <div class="px-4 flex gap-1.5">
+              <span class="px-2.5 py-0.5 rounded-full text-[9px] font-medium bg-white/5 text-gray-500">1H</span>
+              <span class="px-2.5 py-0.5 rounded-full text-[9px] font-medium bg-blue-500/20 text-blue-400 border border-blue-500/30">1D</span>
+              <span class="px-2.5 py-0.5 rounded-full text-[9px] font-medium bg-white/5 text-gray-500">1W</span>
+              <span class="px-2.5 py-0.5 rounded-full text-[9px] font-medium bg-white/5 text-gray-500">1M</span>
+              <span class="px-2.5 py-0.5 rounded-full text-[9px] font-medium bg-white/5 text-gray-500">1Y</span>
+              <span class="px-2.5 py-0.5 rounded-full text-[9px] font-medium bg-white/5 text-gray-500">ALL</span>
+            </div>
+            <!-- Buy/Sell buttons -->
+            <div class="px-4 mt-3 flex gap-2">
+              <button class="flex-1 py-2 rounded-xl bg-green-600/90 text-[11px] font-semibold text-center">Buy</button>
+              <button class="flex-1 py-2 rounded-xl bg-red-600/90 text-[11px] font-semibold text-center">Sell</button>
+            </div>
+            <!-- Order form preview -->
+            <div class="px-4 mt-3 pb-3 space-y-2">
+              <div class="flex items-center justify-between p-2 rounded-lg bg-white/5">
+                <span class="text-[9px] text-gray-500">Amount (BTC)</span>
+                <span class="text-[10px] font-medium">0.015</span>
+              </div>
+              <div class="flex items-center justify-between p-2 rounded-lg bg-white/5">
+                <span class="text-[9px] text-gray-500">Total (USDT)</span>
+                <span class="text-[10px] font-medium">$1,008.52</span>
+              </div>
+            </div>
+            <!-- Bottom tab bar -->
+            <div class="flex items-center justify-around py-2 border-t border-white/10">
+              <div class="flex flex-col items-center gap-0.5"><span class="material-symbols-outlined text-gray-600" style="font-size:16px">home</span><span class="text-[7px] text-gray-600">Home</span></div>
+              <div class="flex flex-col items-center gap-0.5"><span class="material-symbols-outlined text-gray-600" style="font-size:16px">pie_chart</span><span class="text-[7px] text-gray-600">Portfolio</span></div>
+              <div class="flex flex-col items-center gap-0.5"><span class="material-symbols-outlined text-blue-400" style="font-size:16px">swap_horiz</span><span class="text-[7px] text-blue-400">Trade</span></div>
+              <div class="flex flex-col items-center gap-0.5"><span class="material-symbols-outlined text-gray-600" style="font-size:16px">account_balance_wallet</span><span class="text-[7px] text-gray-600">Wallet</span></div>
+              <div class="flex flex-col items-center gap-0.5"><span class="material-symbols-outlined text-gray-600" style="font-size:16px">settings</span><span class="text-[7px] text-gray-600">Settings</span></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- ===== SCREEN 4: ANALYTICS ===== -->
+        <div class="screen-card w-[320px] rounded-2xl bg-stitch-card border border-white/10 shadow-2xl overflow-hidden cursor-pointer flex-shrink-0">
+          <div class="p-1 text-center">
+            <span class="text-[10px] text-gray-500">Analytics</span>
+          </div>
+          <div class="bg-[#1a1b20] rounded-xl mx-1.5 mb-1.5 overflow-hidden">
+            <div class="flex items-center justify-between px-4 pt-2 pb-1">
+              <span class="text-[10px] text-gray-400 font-medium">9:41</span>
+              <div class="flex items-center gap-1"><div class="w-3 h-2 border border-gray-500 rounded-sm"><div class="w-1.5 h-full bg-green-400 rounded-sm"></div></div></div>
+            </div>
+            <div class="px-4 pt-2">
+              <p class="text-sm font-semibold">Analytics</p>
+              <p class="text-[10px] text-gray-500 mt-0.5">Market overview</p>
+            </div>
+            <!-- Stats grid -->
+            <div class="px-4 mt-3 grid grid-cols-2 gap-2">
+              <div class="p-2.5 rounded-xl bg-white/5 border border-white/5">
+                <p class="text-[8px] text-gray-500">24h Volume</p>
+                <p class="text-xs font-bold mt-0.5">$1.2B</p>
+                <div class="flex items-center gap-0.5 mt-1"><span class="material-symbols-outlined text-green-400" style="font-size:10px">trending_up</span><span class="text-[8px] text-green-400">+8.3%</span></div>
+                <svg class="w-full h-6 mt-1" viewBox="0 0 80 24" fill="none"><path d="M0,18 Q10,16 20,12 T40,14 T60,6 T80,10" stroke="#a855f7" stroke-width="1.2" fill="none"/></svg>
+              </div>
+              <div class="p-2.5 rounded-xl bg-white/5 border border-white/5">
+                <p class="text-[8px] text-gray-500">Market Cap</p>
+                <p class="text-xs font-bold mt-0.5">$2.4T</p>
+                <div class="flex items-center gap-0.5 mt-1"><span class="material-symbols-outlined text-green-400" style="font-size:10px">trending_up</span><span class="text-[8px] text-green-400">+2.1%</span></div>
+                <svg class="w-full h-6 mt-1" viewBox="0 0 80 24" fill="none"><path d="M0,20 Q15,14 30,16 T60,8 T80,4" stroke="#3b82f6" stroke-width="1.2" fill="none"/></svg>
+              </div>
+              <div class="p-2.5 rounded-xl bg-white/5 border border-white/5">
+                <p class="text-[8px] text-gray-500">BTC Dominance</p>
+                <p class="text-xs font-bold mt-0.5">54.2%</p>
+                <div class="flex items-center gap-0.5 mt-1"><span class="material-symbols-outlined text-red-400" style="font-size:10px">trending_down</span><span class="text-[8px] text-red-400">-0.4%</span></div>
+                <svg class="w-full h-6 mt-1" viewBox="0 0 80 24" fill="none"><path d="M0,8 Q10,12 25,10 T50,16 T80,14" stroke="#f97316" stroke-width="1.2" fill="none"/></svg>
+              </div>
+              <div class="p-2.5 rounded-xl bg-white/5 border border-white/5">
+                <p class="text-[8px] text-gray-500">Fear &amp; Greed</p>
+                <p class="text-xs font-bold mt-0.5">72</p>
+                <div class="flex items-center gap-0.5 mt-1"><span class="text-[8px] text-yellow-400 font-medium">Greed</span></div>
+                <div class="w-full h-1.5 bg-white/10 rounded-full mt-2"><div class="h-full bg-gradient-to-r from-red-500 via-yellow-500 to-green-500 rounded-full" style="width:72%"></div></div>
+              </div>
+            </div>
+            <!-- Trending -->
+            <div class="px-4 mt-3 pb-3">
+              <p class="text-[10px] text-gray-500 font-medium mb-2">Trending</p>
+              <div class="space-y-1.5">
+                <div class="flex items-center justify-between p-1.5 rounded-lg bg-white/5">
+                  <div class="flex items-center gap-2"><span class="text-[9px] text-gray-500">1</span><span class="text-[10px] font-medium">PEPE</span></div>
+                  <span class="text-[9px] text-green-400">+24.5%</span>
+                </div>
+                <div class="flex items-center justify-between p-1.5 rounded-lg bg-white/5">
+                  <div class="flex items-center gap-2"><span class="text-[9px] text-gray-500">2</span><span class="text-[10px] font-medium">WIF</span></div>
+                  <span class="text-[9px] text-green-400">+18.2%</span>
+                </div>
+                <div class="flex items-center justify-between p-1.5 rounded-lg bg-white/5">
+                  <div class="flex items-center gap-2"><span class="text-[9px] text-gray-500">3</span><span class="text-[10px] font-medium">ARB</span></div>
+                  <span class="text-[9px] text-red-400">-5.1%</span>
+                </div>
+              </div>
+            </div>
+            <!-- Bottom tab bar -->
+            <div class="flex items-center justify-around py-2 border-t border-white/10">
+              <div class="flex flex-col items-center gap-0.5"><span class="material-symbols-outlined text-gray-600" style="font-size:16px">home</span><span class="text-[7px] text-gray-600">Home</span></div>
+              <div class="flex flex-col items-center gap-0.5"><span class="material-symbols-outlined text-gray-600" style="font-size:16px">pie_chart</span><span class="text-[7px] text-gray-600">Portfolio</span></div>
+              <div class="flex flex-col items-center gap-0.5"><span class="material-symbols-outlined text-gray-600" style="font-size:16px">swap_horiz</span><span class="text-[7px] text-gray-600">Trade</span></div>
+              <div class="flex flex-col items-center gap-0.5"><span class="material-symbols-outlined text-blue-400" style="font-size:16px">bar_chart</span><span class="text-[7px] text-blue-400">Analytics</span></div>
+              <div class="flex flex-col items-center gap-0.5"><span class="material-symbols-outlined text-gray-600" style="font-size:16px">settings</span><span class="text-[7px] text-gray-600">Settings</span></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- ===== SCREEN 5: SETTINGS ===== -->
+        <div class="screen-card w-[320px] rounded-2xl bg-stitch-card border border-white/10 shadow-2xl overflow-hidden cursor-pointer flex-shrink-0">
+          <div class="p-1 text-center">
+            <span class="text-[10px] text-gray-500">Settings</span>
+          </div>
+          <div class="bg-[#1a1b20] rounded-xl mx-1.5 mb-1.5 overflow-hidden">
+            <div class="flex items-center justify-between px-4 pt-2 pb-1">
+              <span class="text-[10px] text-gray-400 font-medium">9:41</span>
+              <div class="flex items-center gap-1"><div class="w-3 h-2 border border-gray-500 rounded-sm"><div class="w-1.5 h-full bg-green-400 rounded-sm"></div></div></div>
+            </div>
+            <div class="px-4 pt-2">
+              <p class="text-sm font-semibold">Settings</p>
+            </div>
+            <!-- Profile -->
+            <div class="px-4 mt-3 flex items-center gap-3 p-3 rounded-xl bg-white/5">
+              <div class="w-10 h-10 rounded-full bg-gradient-to-br from-green-400 to-blue-500 flex items-center justify-center text-sm font-bold">AJ</div>
+              <div>
+                <p class="text-xs font-medium">Alex Johnson</p>
+                <p class="text-[9px] text-gray-500">alex@example.com</p>
+              </div>
+              <span class="material-symbols-outlined text-gray-500 ml-auto" style="font-size:16px">chevron_right</span>
+            </div>
+            <!-- Toggles -->
+            <div class="px-4 mt-3 space-y-0.5">
+              <p class="text-[10px] text-gray-500 font-medium mb-1.5">Preferences</p>
+              <div class="flex items-center justify-between py-2.5 border-b border-white/5">
+                <div class="flex items-center gap-2"><span class="material-symbols-outlined text-gray-400" style="font-size:16px">dark_mode</span><span class="text-[11px]">Dark Mode</span></div>
+                <div class="w-8 h-4 rounded-full bg-blue-500 flex items-center p-0.5"><div class="w-3 h-3 rounded-full bg-white ml-auto"></div></div>
+              </div>
+              <div class="flex items-center justify-between py-2.5 border-b border-white/5">
+                <div class="flex items-center gap-2"><span class="material-symbols-outlined text-gray-400" style="font-size:16px">notifications</span><span class="text-[11px]">Notifications</span></div>
+                <div class="w-8 h-4 rounded-full bg-blue-500 flex items-center p-0.5"><div class="w-3 h-3 rounded-full bg-white ml-auto"></div></div>
+              </div>
+              <div class="flex items-center justify-between py-2.5 border-b border-white/5">
+                <div class="flex items-center gap-2"><span class="material-symbols-outlined text-gray-400" style="font-size:16px">fingerprint</span><span class="text-[11px]">Biometric Login</span></div>
+                <div class="w-8 h-4 rounded-full bg-gray-600 flex items-center p-0.5"><div class="w-3 h-3 rounded-full bg-gray-400"></div></div>
+              </div>
+            </div>
+            <!-- Sections -->
+            <div class="px-4 mt-3 space-y-0.5">
+              <p class="text-[10px] text-gray-500 font-medium mb-1.5">General</p>
+              <div class="flex items-center justify-between py-2.5 border-b border-white/5">
+                <div class="flex items-center gap-2"><span class="material-symbols-outlined text-gray-400" style="font-size:16px">security</span><span class="text-[11px]">Security</span></div>
+                <span class="material-symbols-outlined text-gray-600" style="font-size:14px">chevron_right</span>
+              </div>
+              <div class="flex items-center justify-between py-2.5 border-b border-white/5">
+                <div class="flex items-center gap-2"><span class="material-symbols-outlined text-gray-400" style="font-size:16px">privacy_tip</span><span class="text-[11px]">Privacy</span></div>
+                <span class="material-symbols-outlined text-gray-600" style="font-size:14px">chevron_right</span>
+              </div>
+              <div class="flex items-center justify-between py-2.5 border-b border-white/5">
+                <div class="flex items-center gap-2"><span class="material-symbols-outlined text-gray-400" style="font-size:16px">info</span><span class="text-[11px]">About</span></div>
+                <span class="material-symbols-outlined text-gray-600" style="font-size:14px">chevron_right</span>
+              </div>
+            </div>
+            <!-- Logout -->
+            <div class="px-4 mt-3 pb-3">
+              <button class="w-full py-2 rounded-xl bg-red-500/10 border border-red-500/20 text-[11px] font-medium text-red-400">Log Out</button>
+            </div>
+            <!-- Bottom tab bar -->
+            <div class="flex items-center justify-around py-2 border-t border-white/10">
+              <div class="flex flex-col items-center gap-0.5"><span class="material-symbols-outlined text-gray-600" style="font-size:16px">home</span><span class="text-[7px] text-gray-600">Home</span></div>
+              <div class="flex flex-col items-center gap-0.5"><span class="material-symbols-outlined text-gray-600" style="font-size:16px">pie_chart</span><span class="text-[7px] text-gray-600">Portfolio</span></div>
+              <div class="flex flex-col items-center gap-0.5"><span class="material-symbols-outlined text-gray-600" style="font-size:16px">swap_horiz</span><span class="text-[7px] text-gray-600">Trade</span></div>
+              <div class="flex flex-col items-center gap-0.5"><span class="material-symbols-outlined text-gray-600" style="font-size:16px">account_balance_wallet</span><span class="text-[7px] text-gray-600">Wallet</span></div>
+              <div class="flex flex-col items-center gap-0.5"><span class="material-symbols-outlined text-blue-400" style="font-size:16px">settings</span><span class="text-[7px] text-blue-400">Settings</span></div>
+            </div>
+          </div>
+        </div>
+
+      </div><!-- /canvas-inner -->
+
+      <!-- ===== AGENT LOG ===== -->
+      <div class="absolute bottom-28 left-6 z-40 glass-panel rounded-xl w-80 max-h-64 flex flex-col">
+        <div class="flex items-center justify-between px-3 py-2 border-b border-white/10">
+          <div class="flex items-center gap-2">
+            <div class="w-2 h-2 rounded-full bg-green-400 pulse-dot"></div>
+            <span class="text-xs font-medium text-gray-300">Agent Log</span>
+          </div>
+          <span class="material-symbols-outlined text-gray-500 cursor-pointer hover:text-gray-300 transition-colors" style="font-size:16px">expand_more</span>
+        </div>
+        <div id="agent-log-content" class="flex-1 overflow-y-auto p-3 space-y-2.5 text-xs">
+          <div class="agent-log-entry animate-fade-in-up flex items-start gap-2">
+            <span class="material-symbols-outlined text-green-400 mt-0.5" style="font-size:14px">check_circle</span>
+            <div>
+              <span class="text-gray-500">10:23:01</span>
+              <span class="text-gray-300 ml-1">Analyzing design brief...</span>
+            </div>
+          </div>
+          <div class="agent-log-entry animate-fade-in-up flex items-start gap-2">
+            <span class="material-symbols-outlined text-green-400 mt-0.5" style="font-size:14px">check_circle</span>
+            <div>
+              <span class="text-gray-500">10:23:04</span>
+              <span class="text-gray-300 ml-1">Generating color palette from dark theme...</span>
+            </div>
+          </div>
+          <div class="agent-log-entry animate-fade-in-up flex items-start gap-2">
+            <span class="material-symbols-outlined text-green-400 mt-0.5" style="font-size:14px">check_circle</span>
+            <div>
+              <span class="text-gray-500">10:23:08</span>
+              <span class="text-gray-300 ml-1">Creating component hierarchy...</span>
+            </div>
+          </div>
+          <div class="agent-log-entry animate-fade-in-up flex items-start gap-2">
+            <span class="material-symbols-outlined text-green-400 mt-0.5" style="font-size:14px">check_circle</span>
+            <div>
+              <span class="text-gray-500">10:23:12</span>
+              <span class="text-gray-300 ml-1">Applying Material Design tokens...</span>
+            </div>
+          </div>
+          <div class="agent-log-entry animate-fade-in-up flex items-start gap-2">
+            <span class="material-symbols-outlined text-blue-400 mt-0.5" style="font-size:14px">pending</span>
+            <div>
+              <span class="text-gray-500">10:23:15</span>
+              <span class="text-gray-300 ml-1">Rendering screen variations</span>
+              <span class="ml-1"><span class="typing-dot"></span><span class="typing-dot"></span><span class="typing-dot"></span></span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ===== PROMPT BAR ===== -->
+      <div class="absolute bottom-6 left-1/2 -translate-x-1/2 z-40 w-full max-w-2xl px-4">
+        <!-- Suggestion chips -->
+        <div class="flex items-center gap-2 mb-2 justify-center">
+          <button class="suggestion-chip chip px-3 py-1 rounded-full bg-white/5 border border-white/10 text-[11px] text-gray-400 hover:text-gray-200">Add dark mode</button>
+          <button class="suggestion-chip chip px-3 py-1 rounded-full bg-white/5 border border-white/10 text-[11px] text-gray-400 hover:text-gray-200">Improve navigation</button>
+          <button class="suggestion-chip chip px-3 py-1 rounded-full bg-white/5 border border-white/10 text-[11px] text-gray-400 hover:text-gray-200">Generate more screens</button>
+        </div>
+        <!-- Input bar -->
+        <div class="prompt-glow glass-panel rounded-2xl flex items-center gap-2 px-3 py-2 transition-all">
+          <button class="p-1.5 rounded-lg hover:bg-white/10 transition-colors" aria-label="Attach file">
+            <span class="material-symbols-outlined text-gray-500" style="font-size:20px">attach_file</span>
+          </button>
+          <input id="prompt-input" type="text" placeholder="Describe your design..." class="flex-1 bg-transparent text-sm text-gray-200 placeholder-gray-600 outline-none">
+          <button id="send-btn" class="p-2 rounded-xl bg-stitch-accent hover:bg-stitch-accent-hover transition-colors" aria-label="Send prompt">
+            <span class="material-symbols-outlined text-white" style="font-size:18px">arrow_upward</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- ===== REFERENCE DOCK ===== -->
+      <div class="absolute bottom-6 right-6 z-40 glass-panel rounded-xl p-2 flex items-center gap-2">
+        <span class="text-[9px] text-gray-500 font-medium mr-1">Variations</span>
+        <div class="ref-thumb w-10 h-14 rounded-lg bg-stitch-card border border-white/10 cursor-pointer hover:border-white/20 transition-colors flex items-center justify-center">
+          <span class="text-[8px] text-gray-500">v1</span>
+        </div>
+        <div class="ref-thumb thumb-active w-10 h-14 rounded-lg bg-stitch-card border border-white/10 cursor-pointer hover:border-white/20 transition-colors flex items-center justify-center">
+          <span class="text-[8px] text-gray-500">v2</span>
+        </div>
+        <div class="ref-thumb w-10 h-14 rounded-lg bg-stitch-card border border-white/10 cursor-pointer hover:border-white/20 transition-colors flex items-center justify-center">
+          <span class="text-[8px] text-gray-500">v3</span>
+        </div>
+      </div>
+
+    </main>
+  </div>
+
+  <script src="app.js"></script>
+</body>
+</html>
