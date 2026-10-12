@@ -1,154 +1,170 @@
 document.addEventListener('DOMContentLoaded', () => {
+  const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
-  // --- Card selection ---
-  const cards = document.querySelectorAll('.screen-card');
-  const thumbs = document.querySelectorAll('.sidebar-thumb');
+  document.getElementById('year').textContent = new Date().getFullYear();
 
-  function selectCard(index) {
-    cards.forEach((c, i) => {
-      c.classList.toggle('selected', i === index);
+  // --- Nav: background on scroll, mobile menu, active link ---
+  const nav = document.getElementById('nav');
+  const onScroll = () => nav.classList.toggle('scrolled', window.scrollY > 10);
+  onScroll();
+  window.addEventListener('scroll', onScroll, { passive: true });
+
+  const menuBtn = document.getElementById('menu-btn');
+  const mobileMenu = document.getElementById('mobile-menu');
+  const setMenu = (open) => {
+    mobileMenu.classList.toggle('hidden', !open);
+    menuBtn.setAttribute('aria-expanded', String(open));
+    menuBtn.querySelector('span').textContent = open ? 'close' : 'menu';
+  };
+  menuBtn.addEventListener('click', () => setMenu(mobileMenu.classList.contains('hidden')));
+  mobileMenu.querySelectorAll('a').forEach(a => a.addEventListener('click', () => setMenu(false)));
+
+  const navLinks = document.querySelectorAll('.nav-link');
+  const sectionObserver = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (!entry.isIntersecting) return;
+      navLinks.forEach(l => l.classList.toggle('active', l.getAttribute('href') === `#${entry.target.id}`));
     });
-    thumbs.forEach((t, i) => {
-      t.classList.toggle('thumb-active', i === index);
+  }, { rootMargin: '-45% 0px -50% 0px' });
+  ['work', 'about', 'services', 'contact'].forEach(id => sectionObserver.observe(document.getElementById(id)));
+
+  // --- Scroll reveal ---
+  const revealObserver = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('visible');
+        revealObserver.unobserve(entry.target);
+      }
     });
-  }
+  }, { threshold: 0.12 });
+  document.querySelectorAll('.reveal').forEach(el => revealObserver.observe(el));
 
-  cards.forEach((card, i) => {
-    card.addEventListener('click', () => selectCard(i));
-  });
-  thumbs.forEach((thumb, i) => {
-    thumb.addEventListener('click', () => {
-      selectCard(i);
-      cards[i].scrollIntoView({ behavior: 'smooth', inline: 'center', block: 'nearest' });
+  // --- Stat counters ---
+  const animateCounter = (el) => {
+    const target = Number(el.dataset.target);
+    if (reducedMotion) { el.textContent = target; return; }
+    const duration = 1400;
+    const start = performance.now();
+    const tick = (now) => {
+      const p = Math.min((now - start) / duration, 1);
+      el.textContent = Math.round(target * (1 - Math.pow(1 - p, 3)));
+      if (p < 1) requestAnimationFrame(tick);
+    };
+    requestAnimationFrame(tick);
+  };
+  const counterObserver = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        animateCounter(entry.target);
+        counterObserver.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.5 });
+  document.querySelectorAll('.counter').forEach(el => counterObserver.observe(el));
+
+  // --- Project filters ---
+  const filterBtns = document.querySelectorAll('.filter-btn');
+  const projectCards = document.querySelectorAll('.project-card');
+  filterBtns.forEach(btn => {
+    btn.addEventListener('click', () => {
+      const filter = btn.dataset.filter;
+      filterBtns.forEach(b => {
+        b.classList.toggle('active', b === btn);
+        b.setAttribute('aria-pressed', String(b === btn));
+      });
+      projectCards.forEach(card => {
+        const show = filter === 'all' || card.dataset.category === filter;
+        card.classList.toggle('hidden-card', !show);
+        if (show) card.classList.add('visible');
+      });
     });
   });
 
-  // --- Agent log sequential reveal ---
-  const logEntries = document.querySelectorAll('.agent-log-entry');
-  logEntries.forEach((entry, i) => {
-    entry.style.animationDelay = `${0.6 + i * 0.6}s`;
+  // --- Lightbox ---
+  const lightbox = document.getElementById('lightbox');
+  const lightboxContent = document.getElementById('lightbox-content');
+  const lightboxClose = document.getElementById('lightbox-close');
+  let lastFocused = null;
+
+  const openLightbox = (phone) => {
+    lastFocused = phone;
+    const clone = phone.cloneNode(true);
+    clone.removeAttribute('role');
+    clone.removeAttribute('tabindex');
+    clone.removeAttribute('aria-label');
+    lightboxContent.replaceChildren(clone);
+    lightbox.setAttribute('aria-label', `${phone.dataset.screen} screen preview`);
+    lightbox.classList.add('open');
+    document.body.style.overflow = 'hidden';
+    lightboxClose.focus();
+  };
+  const closeLightbox = () => {
+    lightbox.classList.remove('open');
+    lightboxContent.replaceChildren();
+    document.body.style.overflow = '';
+    if (lastFocused) lastFocused.focus();
+  };
+
+  document.querySelectorAll('.phone').forEach(phone => {
+    phone.addEventListener('click', () => openLightbox(phone));
+    phone.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter' || e.key === ' ') {
+        e.preventDefault();
+        openLightbox(phone);
+      }
+    });
+  });
+  lightboxClose.addEventListener('click', closeLightbox);
+  lightbox.addEventListener('click', (e) => { if (e.target === lightbox) closeLightbox(); });
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape' && lightbox.classList.contains('open')) closeLightbox();
   });
 
-  // --- Prompt bar ---
-  const promptInput = document.getElementById('prompt-input');
-  const sendBtn = document.getElementById('send-btn');
-  const chips = document.querySelectorAll('.suggestion-chip');
-  const agentLog = document.getElementById('agent-log-content');
+  // --- Contact form ---
+  const form = document.getElementById('contact-form');
+  const toast = document.getElementById('toast');
+  const toastText = document.getElementById('toast-text');
+  let toastTimer;
 
-  chips.forEach(chip => {
-    chip.addEventListener('click', () => {
-      promptInput.value = chip.textContent.trim();
-      promptInput.focus();
+  const showToast = (msg) => {
+    toastText.textContent = msg;
+    toast.classList.add('show');
+    clearTimeout(toastTimer);
+    toastTimer = setTimeout(() => toast.classList.remove('show'), 3500);
+  };
+
+  const validators = {
+    name: v => v.trim().length > 0,
+    email: v => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v.trim()),
+    message: v => v.trim().length >= 10,
+  };
+
+  form.querySelectorAll('.field').forEach(field => {
+    field.addEventListener('input', () => {
+      if (field.classList.contains('invalid') && validators[field.name](field.value)) {
+        field.classList.remove('invalid');
+        field.removeAttribute('aria-invalid');
+      }
     });
   });
 
-  function handleSend() {
-    const text = promptInput.value.trim();
-    if (!text) return;
-
-    const entry = document.createElement('div');
-    entry.className = 'agent-log-entry animate-fade-in-up flex items-start gap-2 text-xs';
-    entry.innerHTML = `
-      <span class="material-symbols-outlined text-sm text-blue-400 mt-0.5" style="font-size:14px">pending</span>
-      <div>
-        <span class="text-gray-400">${new Date().toLocaleTimeString([], {hour:'2-digit',minute:'2-digit',second:'2-digit'})}</span>
-        <span class="text-gray-300 ml-1">${escapeHtml(text)}</span>
-        <span class="ml-1"><span class="typing-dot"></span><span class="typing-dot"></span><span class="typing-dot"></span></span>
-      </div>
-    `;
-    agentLog.appendChild(entry);
-    agentLog.scrollTop = agentLog.scrollHeight;
-    promptInput.value = '';
-  }
-
-  function escapeHtml(str) {
-    const div = document.createElement('div');
-    div.textContent = str;
-    return div.innerHTML;
-  }
-
-  sendBtn.addEventListener('click', handleSend);
-  promptInput.addEventListener('keydown', (e) => {
-    if (e.key === 'Enter' && !e.shiftKey) {
-      e.preventDefault();
-      handleSend();
+  form.addEventListener('submit', (e) => {
+    e.preventDefault();
+    let firstInvalid = null;
+    Object.entries(validators).forEach(([name, isValid]) => {
+      const field = form.elements[name];
+      const ok = isValid(field.value);
+      field.classList.toggle('invalid', !ok);
+      if (ok) field.removeAttribute('aria-invalid');
+      else field.setAttribute('aria-invalid', 'true');
+      if (!ok && !firstInvalid) firstInvalid = field;
+    });
+    if (firstInvalid) {
+      firstInvalid.focus();
+      return;
     }
+    const firstName = form.elements.name.value.trim().split(/\s+/)[0];
+    showToast(`Thanks, ${firstName}! I'll be in touch soon.`);
+    form.reset();
   });
-
-  // --- Sidebar toggle ---
-  const sidebar = document.getElementById('sidebar');
-  const sidebarToggle = document.getElementById('sidebar-toggle');
-  let sidebarExpanded = true;
-
-  sidebarToggle.addEventListener('click', () => {
-    sidebarExpanded = !sidebarExpanded;
-    if (sidebarExpanded) {
-      sidebar.classList.remove('sidebar-collapsed');
-      sidebar.classList.add('sidebar-expanded');
-      sidebar.style.width = '240px';
-    } else {
-      sidebar.classList.remove('sidebar-expanded');
-      sidebar.classList.add('sidebar-collapsed');
-      sidebar.style.width = '64px';
-    }
-  });
-
-  // --- Zoom controls ---
-  const zoomLevels = [50, 75, 100, 125, 150];
-  let currentZoomIndex = 2;
-  const zoomLabel = document.getElementById('zoom-label');
-  const canvasInner = document.getElementById('canvas-inner');
-  const zoomIn = document.getElementById('zoom-in');
-  const zoomOut = document.getElementById('zoom-out');
-
-  function applyZoom() {
-    const scale = zoomLevels[currentZoomIndex] / 100;
-    canvasInner.style.transform = `scale(${scale})`;
-    zoomLabel.textContent = `${zoomLevels[currentZoomIndex]}%`;
-  }
-
-  zoomIn.addEventListener('click', () => {
-    if (currentZoomIndex < zoomLevels.length - 1) {
-      currentZoomIndex++;
-      applyZoom();
-    }
-  });
-  zoomOut.addEventListener('click', () => {
-    if (currentZoomIndex > 0) {
-      currentZoomIndex--;
-      applyZoom();
-    }
-  });
-
-  // --- Mode toggle ---
-  const modeStandard = document.getElementById('mode-standard');
-  const modeExperimental = document.getElementById('mode-experimental');
-  const modeIndicator = document.getElementById('mode-indicator');
-
-  modeStandard.addEventListener('click', () => {
-    modeIndicator.style.transform = 'translateX(0)';
-    modeStandard.classList.add('text-white');
-    modeStandard.classList.remove('text-gray-400');
-    modeExperimental.classList.add('text-gray-400');
-    modeExperimental.classList.remove('text-white');
-  });
-  modeExperimental.addEventListener('click', () => {
-    modeIndicator.style.transform = 'translateX(100%)';
-    modeExperimental.classList.add('text-white');
-    modeExperimental.classList.remove('text-gray-400');
-    modeStandard.classList.add('text-gray-400');
-    modeStandard.classList.remove('text-white');
-  });
-
-  // --- Reference dock ---
-  const refThumbs = document.querySelectorAll('.ref-thumb');
-  refThumbs.forEach((thumb, i) => {
-    thumb.addEventListener('click', () => {
-      refThumbs.forEach(t => t.classList.remove('thumb-active'));
-      thumb.classList.add('thumb-active');
-    });
-  });
-
-  // Select first card by default
-  selectCard(0);
 });
