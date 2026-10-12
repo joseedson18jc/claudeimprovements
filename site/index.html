@@ -1,0 +1,786 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Alex Rivera — Product Designer &amp; Frontend Developer</title>
+  <meta name="description" content="Portfolio of Alex Rivera, a product designer crafting mobile and web experiences.">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: { sans: ['Inter', 'system-ui', 'sans-serif'] },
+          colors: {
+            ink: { DEFAULT: '#191a1f', surface: '#25262b', card: '#2b2c31', elevated: '#35363b' },
+            accent: { DEFAULT: '#1a73e8', hover: '#4285f4' }
+          }
+        }
+      }
+    }
+  </script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body class="bg-ink text-white font-sans antialiased">
+  <a href="#main" class="sr-only focus:not-sr-only focus:fixed focus:top-4 focus:left-4 focus:z-[100] focus:bg-accent focus:px-4 focus:py-2 focus:rounded-lg">Skip to content</a>
+
+  <!-- ===== NAV ===== -->
+  <header id="nav" class="fixed top-0 inset-x-0 z-50 transition-colors duration-300">
+    <nav class="max-w-6xl mx-auto px-5 h-16 flex items-center justify-between" aria-label="Main">
+      <a href="#top" class="flex items-center gap-2 font-semibold tracking-tight">
+        <span class="w-8 h-8 rounded-lg bg-gradient-to-br from-blue-500 to-purple-600 grid place-items-center text-sm font-bold">AR</span>
+        Alex Rivera
+      </a>
+      <ul class="hidden md:flex items-center gap-8 text-sm text-gray-400">
+        <li><a href="#work" class="nav-link hover:text-white transition-colors">Work</a></li>
+        <li><a href="#about" class="nav-link hover:text-white transition-colors">About</a></li>
+        <li><a href="#services" class="nav-link hover:text-white transition-colors">Services</a></li>
+        <li><a href="#contact" class="nav-link hover:text-white transition-colors">Contact</a></li>
+      </ul>
+      <a href="#contact" class="hidden md:inline-flex items-center gap-1.5 px-4 py-2 rounded-full bg-white text-ink text-sm font-medium hover:bg-gray-200 transition-colors">
+        Let's talk <span class="material-symbols-outlined" style="font-size:18px">arrow_outward</span>
+      </a>
+      <button id="menu-btn" class="md:hidden p-2 rounded-lg hover:bg-white/10" aria-label="Open menu" aria-expanded="false" aria-controls="mobile-menu">
+        <span class="material-symbols-outlined">menu</span>
+      </button>
+    </nav>
+    <div id="mobile-menu" class="md:hidden hidden border-t border-white/10 bg-ink/95 backdrop-blur-xl">
+      <ul class="px-5 py-4 space-y-1 text-gray-300">
+        <li><a href="#work" class="block py-2">Work</a></li>
+        <li><a href="#about" class="block py-2">About</a></li>
+        <li><a href="#services" class="block py-2">Services</a></li>
+        <li><a href="#contact" class="block py-2">Contact</a></li>
+      </ul>
+    </div>
+  </header>
+
+  <main id="main">
+    <!-- ===== HERO ===== -->
+    <section id="top" class="relative overflow-hidden pt-36 pb-24 md:pt-44 md:pb-32">
+      <div class="hero-glow" aria-hidden="true"></div>
+      <div class="relative max-w-6xl mx-auto px-5">
+        <div class="reveal inline-flex items-center gap-2 px-3 py-1 rounded-full border border-white/10 bg-white/5 text-xs text-gray-300">
+          <span class="w-2 h-2 rounded-full bg-green-400 pulse-dot"></span> Available for new projects
+        </div>
+        <h1 class="reveal mt-6 text-4xl sm:text-6xl md:text-7xl font-bold tracking-tight leading-[1.05] max-w-4xl">
+          Designing digital products <span class="gradient-text">people love to use.</span>
+        </h1>
+        <p class="reveal mt-6 text-lg text-gray-400 max-w-2xl">
+          I'm a product designer and frontend developer helping startups turn complex ideas into clear, beautiful mobile and web experiences.
+        </p>
+        <div class="reveal mt-10 flex flex-wrap gap-3">
+          <a href="#work" class="inline-flex items-center gap-2 px-6 py-3 rounded-full bg-accent hover:bg-accent-hover font-medium transition-colors">
+            View my work <span class="material-symbols-outlined" style="font-size:20px">arrow_downward</span>
+          </a>
+          <a href="#contact" class="inline-flex items-center gap-2 px-6 py-3 rounded-full border border-white/15 hover:bg-white/5 font-medium transition-colors">
+            Get in touch
+          </a>
+        </div>
+
+        <!-- Stats -->
+        <dl class="reveal mt-20 grid grid-cols-2 md:grid-cols-4 gap-6 border-t border-white/10 pt-10">
+          <div><dt class="text-sm text-gray-500">Years of experience</dt><dd class="text-3xl md:text-4xl font-bold mt-1"><span class="counter" data-target="8">0</span>+</dd></div>
+          <div><dt class="text-sm text-gray-500">Projects shipped</dt><dd class="text-3xl md:text-4xl font-bold mt-1"><span class="counter" data-target="64">0</span></dd></div>
+          <div><dt class="text-sm text-gray-500">Happy clients</dt><dd class="text-3xl md:text-4xl font-bold mt-1"><span class="counter" data-target="40">0</span>+</dd></div>
+          <div><dt class="text-sm text-gray-500">Design awards</dt><dd class="text-3xl md:text-4xl font-bold mt-1"><span class="counter" data-target="12">0</span></dd></div>
+        </dl>
+      </div>
+    </section>
+
+    <!-- ===== FEATURED CASE STUDY ===== -->
+    <section id="work" class="py-24 bg-ink-surface/40 border-y border-white/5">
+      <div class="max-w-6xl mx-auto px-5">
+        <div class="grid lg:grid-cols-3 gap-10 items-end">
+          <div class="lg:col-span-2 reveal">
+            <p class="text-sm font-medium text-accent-hover uppercase tracking-widest">Featured case study</p>
+            <h2 class="mt-3 text-3xl md:text-5xl font-bold tracking-tight">Coinly — Crypto Dashboard</h2>
+            <p class="mt-4 text-gray-400 max-w-2xl">
+              A mobile app that makes tracking, analysing and trading crypto feel calm instead of chaotic. I led research, interaction design and the visual system across five core flows.
+            </p>
+          </div>
+          <dl class="reveal grid grid-cols-3 lg:grid-cols-1 gap-4 text-sm">
+            <div><dt class="text-gray-500">Role</dt><dd class="font-medium">Lead Product Designer</dd></div>
+            <div><dt class="text-gray-500">Timeline</dt><dd class="font-medium">12 weeks · 2026</dd></div>
+            <div><dt class="text-gray-500">Tools</dt><dd class="font-medium">Stitch, Figma, Tailwind</dd></div>
+          </dl>
+        </div>
+
+        <div class="mt-14 -mx-5 px-5 overflow-x-auto snap-x snap-mandatory pb-6">
+          <div class="flex gap-8 w-max">
+            <figure class="reveal snap-center flex-shrink-0">
+              <div class="phone" role="button" tabindex="0" data-screen="Home" aria-label="Enlarge Home screen">
+          <div class="phone-screen">
+            <!-- Status bar -->
+            <div class="flex items-center justify-between px-4 pt-2 pb-1">
+              <span class="text-[10px] text-gray-400 font-medium">9:41</span>
+              <div class="flex items-center gap-1">
+                <div class="w-3 h-2 border border-gray-500 rounded-sm"><div class="w-1.5 h-full bg-green-400 rounded-sm"></div></div>
+              </div>
+            </div>
+            <!-- Greeting -->
+            <div class="px-4 pt-2">
+              <p class="text-[10px] text-gray-500">Good morning</p>
+              <p class="text-sm font-semibold">Alex Johnson</p>
+            </div>
+            <!-- Balance card -->
+            <div class="mx-4 mt-3 p-3 rounded-xl bg-gradient-to-br from-blue-600/30 to-purple-600/20 border border-white/10">
+              <p class="text-[10px] text-gray-400">Total Balance</p>
+              <p class="text-xl font-bold mt-0.5">$24,531.82</p>
+              <div class="flex items-center gap-1 mt-1">
+                <span class="text-[10px] font-medium text-green-400">+2.4%</span>
+                <span class="text-[10px] text-gray-500">today</span>
+              </div>
+              <!-- Sparkline -->
+              <svg class="w-full h-8 mt-2" viewBox="0 0 200 30" fill="none">
+                <defs>
+                  <linearGradient id="spark1" x1="0" y1="0" x2="0" y2="1">
+                    <stop offset="0%" stop-color="#3b82f6" stop-opacity="0.3"/>
+                    <stop offset="100%" stop-color="#3b82f6" stop-opacity="0"/>
+                  </linearGradient>
+                </defs>
+                <path d="M0,20 Q20,18 40,15 T80,12 T120,8 T160,14 T200,6" stroke="#3b82f6" stroke-width="1.5" fill="none"/>
+                <path d="M0,20 Q20,18 40,15 T80,12 T120,8 T160,14 T200,6 V30 H0 Z" fill="url(#spark1)"/>
+              </svg>
+            </div>
+            <!-- Coin list -->
+            <div class="px-4 mt-3 space-y-2 pb-2">
+              <div class="flex items-center justify-between p-2 rounded-lg bg-white/5">
+                <div class="flex items-center gap-2">
+                  <div class="w-6 h-6 rounded-full bg-orange-500 flex items-center justify-center text-[8px] font-bold">B</div>
+                  <div><p class="text-[10px] font-medium">Bitcoin</p><p class="text-[8px] text-gray-500">BTC</p></div>
+                </div>
+                <div class="text-right">
+                  <p class="text-[10px] font-medium">$67,234</p>
+                  <p class="text-[8px] text-green-400">+1.8%</p>
+                </div>
+              </div>
+              <div class="flex items-center justify-between p-2 rounded-lg bg-white/5">
+                <div class="flex items-center gap-2">
+                  <div class="w-6 h-6 rounded-full bg-blue-500 flex items-center justify-center text-[8px] font-bold">E</div>
+                  <div><p class="text-[10px] font-medium">Ethereum</p><p class="text-[8px] text-gray-500">ETH</p></div>
+                </div>
+                <div class="text-right">
+                  <p class="text-[10px] font-medium">$3,421</p>
+                  <p class="text-[8px] text-red-400">-0.3%</p>
+                </div>
+              </div>
+              <div class="flex items-center justify-between p-2 rounded-lg bg-white/5">
+                <div class="flex items-center gap-2">
+                  <div class="w-6 h-6 rounded-full bg-purple-500 flex items-center justify-center text-[8px] font-bold">S</div>
+                  <div><p class="text-[10px] font-medium">Solana</p><p class="text-[8px] text-gray-500">SOL</p></div>
+                </div>
+                <div class="text-right">
+                  <p class="text-[10px] font-medium">$142.50</p>
+                  <p class="text-[8px] text-green-400">+5.2%</p>
+                </div>
+              </div>
+            </div>
+            <!-- Bottom tab bar -->
+            <div class="flex items-center justify-around py-2 border-t border-white/10 bg-[#1a1b20]">
+              <div class="flex flex-col items-center gap-0.5"><span class="material-symbols-outlined text-blue-400" style="font-size:16px">home</span><span class="text-[7px] text-blue-400">Home</span></div>
+              <div class="flex flex-col items-center gap-0.5"><span class="material-symbols-outlined text-gray-600" style="font-size:16px">pie_chart</span><span class="text-[7px] text-gray-600">Portfolio</span></div>
+              <div class="flex flex-col items-center gap-0.5"><span class="material-symbols-outlined text-gray-600" style="font-size:16px">swap_horiz</span><span class="text-[7px] text-gray-600">Trade</span></div>
+              <div class="flex flex-col items-center gap-0.5"><span class="material-symbols-outlined text-gray-600" style="font-size:16px">account_balance_wallet</span><span class="text-[7px] text-gray-600">Wallet</span></div>
+              <div class="flex flex-col items-center gap-0.5"><span class="material-symbols-outlined text-gray-600" style="font-size:16px">settings</span><span class="text-[7px] text-gray-600">Settings</span></div>
+            </div>
+          </div>
+              </div>
+              <figcaption class="mt-4 text-center text-sm text-gray-400">Home</figcaption>
+            </figure>
+            <figure class="reveal snap-center flex-shrink-0">
+              <div class="phone" role="button" tabindex="0" data-screen="Portfolio" aria-label="Enlarge Portfolio screen">
+          <div class="phone-screen">
+            <div class="flex items-center justify-between px-4 pt-2 pb-1">
+              <span class="text-[10px] text-gray-400 font-medium">9:41</span>
+              <div class="flex items-center gap-1"><div class="w-3 h-2 border border-gray-500 rounded-sm"><div class="w-1.5 h-full bg-green-400 rounded-sm"></div></div></div>
+            </div>
+            <div class="px-4 pt-2">
+              <p class="text-sm font-semibold">Portfolio</p>
+              <p class="text-[10px] text-gray-500 mt-0.5">Asset allocation</p>
+            </div>
+            <!-- Donut chart -->
+            <div class="flex justify-center py-4">
+              <div class="relative">
+                <svg width="120" height="120" viewBox="0 0 120 120">
+                  <circle cx="60" cy="60" r="45" fill="none" stroke="#f97316" stroke-width="14" stroke-dasharray="127 283" stroke-dashoffset="0" transform="rotate(-90 60 60)"/>
+                  <circle cx="60" cy="60" r="45" fill="none" stroke="#3b82f6" stroke-width="14" stroke-dasharray="85 283" stroke-dashoffset="-127" transform="rotate(-90 60 60)"/>
+                  <circle cx="60" cy="60" r="45" fill="none" stroke="#a855f7" stroke-width="14" stroke-dasharray="42 283" stroke-dashoffset="-212" transform="rotate(-90 60 60)"/>
+                  <circle cx="60" cy="60" r="45" fill="none" stroke="#6b7280" stroke-width="14" stroke-dasharray="29 283" stroke-dashoffset="-254" transform="rotate(-90 60 60)"/>
+                </svg>
+                <div class="absolute inset-0 flex flex-col items-center justify-center">
+                  <span class="text-xs font-bold">$24.5K</span>
+                  <span class="text-[8px] text-gray-500">Total</span>
+                </div>
+              </div>
+            </div>
+            <!-- Legend -->
+            <div class="px-4 grid grid-cols-2 gap-2">
+              <div class="flex items-center gap-1.5"><div class="w-2 h-2 rounded-full bg-orange-500"></div><span class="text-[10px] text-gray-300">BTC 45%</span></div>
+              <div class="flex items-center gap-1.5"><div class="w-2 h-2 rounded-full bg-blue-500"></div><span class="text-[10px] text-gray-300">ETH 30%</span></div>
+              <div class="flex items-center gap-1.5"><div class="w-2 h-2 rounded-full bg-purple-500"></div><span class="text-[10px] text-gray-300">SOL 15%</span></div>
+              <div class="flex items-center gap-1.5"><div class="w-2 h-2 rounded-full bg-gray-500"></div><span class="text-[10px] text-gray-300">Other 10%</span></div>
+            </div>
+            <!-- Holdings -->
+            <div class="px-4 mt-3 space-y-1.5 pb-3">
+              <p class="text-[10px] text-gray-500 font-medium">Holdings</p>
+              <div class="flex items-center justify-between p-2 rounded-lg bg-white/5">
+                <div class="flex items-center gap-2">
+                  <div class="w-5 h-5 rounded-full bg-orange-500 flex items-center justify-center text-[7px] font-bold">B</div>
+                  <div><p class="text-[10px] font-medium">Bitcoin</p><p class="text-[8px] text-gray-500">0.164 BTC</p></div>
+                </div>
+                <p class="text-[10px] font-medium">$11,039</p>
+              </div>
+              <div class="flex items-center justify-between p-2 rounded-lg bg-white/5">
+                <div class="flex items-center gap-2">
+                  <div class="w-5 h-5 rounded-full bg-blue-500 flex items-center justify-center text-[7px] font-bold">E</div>
+                  <div><p class="text-[10px] font-medium">Ethereum</p><p class="text-[8px] text-gray-500">2.15 ETH</p></div>
+                </div>
+                <p class="text-[10px] font-medium">$7,359</p>
+              </div>
+              <div class="flex items-center justify-between p-2 rounded-lg bg-white/5">
+                <div class="flex items-center gap-2">
+                  <div class="w-5 h-5 rounded-full bg-purple-500 flex items-center justify-center text-[7px] font-bold">S</div>
+                  <div><p class="text-[10px] font-medium">Solana</p><p class="text-[8px] text-gray-500">25.8 SOL</p></div>
+                </div>
+                <p class="text-[10px] font-medium">$3,677</p>
+              </div>
+            </div>
+            <!-- Bottom tab bar -->
+            <div class="flex items-center justify-around py-2 border-t border-white/10">
+              <div class="flex flex-col items-center gap-0.5"><span class="material-symbols-outlined text-gray-600" style="font-size:16px">home</span><span class="text-[7px] text-gray-600">Home</span></div>
+              <div class="flex flex-col items-center gap-0.5"><span class="material-symbols-outlined text-blue-400" style="font-size:16px">pie_chart</span><span class="text-[7px] text-blue-400">Portfolio</span></div>
+              <div class="flex flex-col items-center gap-0.5"><span class="material-symbols-outlined text-gray-600" style="font-size:16px">swap_horiz</span><span class="text-[7px] text-gray-600">Trade</span></div>
+              <div class="flex flex-col items-center gap-0.5"><span class="material-symbols-outlined text-gray-600" style="font-size:16px">account_balance_wallet</span><span class="text-[7px] text-gray-600">Wallet</span></div>
+              <div class="flex flex-col items-center gap-0.5"><span class="material-symbols-outlined text-gray-600" style="font-size:16px">settings</span><span class="text-[7px] text-gray-600">Settings</span></div>
+            </div>
+          </div>
+              </div>
+              <figcaption class="mt-4 text-center text-sm text-gray-400">Portfolio</figcaption>
+            </figure>
+            <figure class="reveal snap-center flex-shrink-0">
+              <div class="phone" role="button" tabindex="0" data-screen="Trade" aria-label="Enlarge Trade screen">
+          <div class="phone-screen">
+            <div class="flex items-center justify-between px-4 pt-2 pb-1">
+              <span class="text-[10px] text-gray-400 font-medium">9:41</span>
+              <div class="flex items-center gap-1"><div class="w-3 h-2 border border-gray-500 rounded-sm"><div class="w-1.5 h-full bg-green-400 rounded-sm"></div></div></div>
+            </div>
+            <!-- Pair header -->
+            <div class="px-4 pt-2 flex items-center justify-between">
+              <div>
+                <p class="text-sm font-semibold">BTC / USDT</p>
+                <p class="text-[10px] text-green-400">$67,234.50 <span class="text-gray-500">+1.82%</span></p>
+              </div>
+              <div class="flex items-center gap-1">
+                <span class="material-symbols-outlined text-gray-500" style="font-size:16px">candlestick_chart</span>
+                <span class="material-symbols-outlined text-gray-500" style="font-size:16px">show_chart</span>
+              </div>
+            </div>
+            <!-- Chart area -->
+            <div class="px-4 py-3">
+              <svg class="w-full h-28" viewBox="0 0 280 100" fill="none">
+                <defs>
+                  <linearGradient id="chartGrad" x1="0" y1="0" x2="0" y2="1">
+                    <stop offset="0%" stop-color="#34a853" stop-opacity="0.2"/>
+                    <stop offset="100%" stop-color="#34a853" stop-opacity="0"/>
+                  </linearGradient>
+                </defs>
+                <!-- Candlestick-like bars -->
+                <rect x="10" y="40" width="6" height="30" rx="1" fill="#34a853" opacity="0.8"/>
+                <rect x="22" y="35" width="6" height="40" rx="1" fill="#34a853" opacity="0.8"/>
+                <rect x="34" y="45" width="6" height="20" rx="1" fill="#ea4335" opacity="0.8"/>
+                <rect x="46" y="30" width="6" height="35" rx="1" fill="#34a853" opacity="0.8"/>
+                <rect x="58" y="50" width="6" height="25" rx="1" fill="#ea4335" opacity="0.8"/>
+                <rect x="70" y="25" width="6" height="45" rx="1" fill="#34a853" opacity="0.8"/>
+                <rect x="82" y="20" width="6" height="50" rx="1" fill="#34a853" opacity="0.8"/>
+                <rect x="94" y="35" width="6" height="30" rx="1" fill="#ea4335" opacity="0.8"/>
+                <rect x="106" y="28" width="6" height="42" rx="1" fill="#34a853" opacity="0.8"/>
+                <rect x="118" y="40" width="6" height="20" rx="1" fill="#ea4335" opacity="0.8"/>
+                <rect x="130" y="22" width="6" height="48" rx="1" fill="#34a853" opacity="0.8"/>
+                <rect x="142" y="15" width="6" height="55" rx="1" fill="#34a853" opacity="0.8"/>
+                <rect x="154" y="30" width="6" height="35" rx="1" fill="#ea4335" opacity="0.8"/>
+                <rect x="166" y="18" width="6" height="42" rx="1" fill="#34a853" opacity="0.8"/>
+                <rect x="178" y="25" width="6" height="38" rx="1" fill="#34a853" opacity="0.8"/>
+                <rect x="190" y="35" width="6" height="28" rx="1" fill="#ea4335" opacity="0.8"/>
+                <rect x="202" y="12" width="6" height="50" rx="1" fill="#34a853" opacity="0.8"/>
+                <rect x="214" y="20" width="6" height="40" rx="1" fill="#34a853" opacity="0.8"/>
+                <rect x="226" y="30" width="6" height="25" rx="1" fill="#ea4335" opacity="0.8"/>
+                <rect x="238" y="10" width="6" height="55" rx="1" fill="#34a853" opacity="0.8"/>
+                <rect x="250" y="15" width="6" height="45" rx="1" fill="#34a853" opacity="0.8"/>
+                <rect x="262" y="8" width="6" height="50" rx="1" fill="#34a853" opacity="0.8"/>
+              </svg>
+            </div>
+            <!-- Time range pills -->
+            <div class="px-4 flex gap-1.5">
+              <span class="px-2.5 py-0.5 rounded-full text-[9px] font-medium bg-white/5 text-gray-500">1H</span>
+              <span class="px-2.5 py-0.5 rounded-full text-[9px] font-medium bg-blue-500/20 text-blue-400 border border-blue-500/30">1D</span>
+              <span class="px-2.5 py-0.5 rounded-full text-[9px] font-medium bg-white/5 text-gray-500">1W</span>
+              <span class="px-2.5 py-0.5 rounded-full text-[9px] font-medium bg-white/5 text-gray-500">1M</span>
+              <span class="px-2.5 py-0.5 rounded-full text-[9px] font-medium bg-white/5 text-gray-500">1Y</span>
+              <span class="px-2.5 py-0.5 rounded-full text-[9px] font-medium bg-white/5 text-gray-500">ALL</span>
+            </div>
+            <!-- Buy/Sell buttons -->
+            <div class="px-4 mt-3 flex gap-2">
+              <button class="flex-1 py-2 rounded-xl bg-green-600/90 text-[11px] font-semibold text-center">Buy</button>
+              <button class="flex-1 py-2 rounded-xl bg-red-600/90 text-[11px] font-semibold text-center">Sell</button>
+            </div>
+            <!-- Order form preview -->
+            <div class="px-4 mt-3 pb-3 space-y-2">
+              <div class="flex items-center justify-between p-2 rounded-lg bg-white/5">
+                <span class="text-[9px] text-gray-500">Amount (BTC)</span>
+                <span class="text-[10px] font-medium">0.015</span>
+              </div>
+              <div class="flex items-center justify-between p-2 rounded-lg bg-white/5">
+                <span class="text-[9px] text-gray-500">Total (USDT)</span>
+                <span class="text-[10px] font-medium">$1,008.52</span>
+              </div>
+            </div>
+            <!-- Bottom tab bar -->
+            <div class="flex items-center justify-around py-2 border-t border-white/10">
+              <div class="flex flex-col items-center gap-0.5"><span class="material-symbols-outlined text-gray-600" style="font-size:16px">home</span><span class="text-[7px] text-gray-600">Home</span></div>
+              <div class="flex flex-col items-center gap-0.5"><span class="material-symbols-outlined text-gray-600" style="font-size:16px">pie_chart</span><span class="text-[7px] text-gray-600">Portfolio</span></div>
+              <div class="flex flex-col items-center gap-0.5"><span class="material-symbols-outlined text-blue-400" style="font-size:16px">swap_horiz</span><span class="text-[7px] text-blue-400">Trade</span></div>
+              <div class="flex flex-col items-center gap-0.5"><span class="material-symbols-outlined text-gray-600" style="font-size:16px">account_balance_wallet</span><span class="text-[7px] text-gray-600">Wallet</span></div>
+              <div class="flex flex-col items-center gap-0.5"><span class="material-symbols-outlined text-gray-600" style="font-size:16px">settings</span><span class="text-[7px] text-gray-600">Settings</span></div>
+            </div>
+          </div>
+              </div>
+              <figcaption class="mt-4 text-center text-sm text-gray-400">Trade</figcaption>
+            </figure>
+            <figure class="reveal snap-center flex-shrink-0">
+              <div class="phone" role="button" tabindex="0" data-screen="Analytics" aria-label="Enlarge Analytics screen">
+          <div class="phone-screen">
+            <div class="flex items-center justify-between px-4 pt-2 pb-1">
+              <span class="text-[10px] text-gray-400 font-medium">9:41</span>
+              <div class="flex items-center gap-1"><div class="w-3 h-2 border border-gray-500 rounded-sm"><div class="w-1.5 h-full bg-green-400 rounded-sm"></div></div></div>
+            </div>
+            <div class="px-4 pt-2">
+              <p class="text-sm font-semibold">Analytics</p>
+              <p class="text-[10px] text-gray-500 mt-0.5">Market overview</p>
+            </div>
+            <!-- Stats grid -->
+            <div class="px-4 mt-3 grid grid-cols-2 gap-2">
+              <div class="p-2.5 rounded-xl bg-white/5 border border-white/5">
+                <p class="text-[8px] text-gray-500">24h Volume</p>
+                <p class="text-xs font-bold mt-0.5">$1.2B</p>
+                <div class="flex items-center gap-0.5 mt-1"><span class="material-symbols-outlined text-green-400" style="font-size:10px">trending_up</span><span class="text-[8px] text-green-400">+8.3%</span></div>
+                <svg class="w-full h-6 mt-1" viewBox="0 0 80 24" fill="none"><path d="M0,18 Q10,16 20,12 T40,14 T60,6 T80,10" stroke="#a855f7" stroke-width="1.2" fill="none"/></svg>
+              </div>
+              <div class="p-2.5 rounded-xl bg-white/5 border border-white/5">
+                <p class="text-[8px] text-gray-500">Market Cap</p>
+                <p class="text-xs font-bold mt-0.5">$2.4T</p>
+                <div class="flex items-center gap-0.5 mt-1"><span class="material-symbols-outlined text-green-400" style="font-size:10px">trending_up</span><span class="text-[8px] text-green-400">+2.1%</span></div>
+                <svg class="w-full h-6 mt-1" viewBox="0 0 80 24" fill="none"><path d="M0,20 Q15,14 30,16 T60,8 T80,4" stroke="#3b82f6" stroke-width="1.2" fill="none"/></svg>
+              </div>
+              <div class="p-2.5 rounded-xl bg-white/5 border border-white/5">
+                <p class="text-[8px] text-gray-500">BTC Dominance</p>
+                <p class="text-xs font-bold mt-0.5">54.2%</p>
+                <div class="flex items-center gap-0.5 mt-1"><span class="material-symbols-outlined text-red-400" style="font-size:10px">trending_down</span><span class="text-[8px] text-red-400">-0.4%</span></div>
+                <svg class="w-full h-6 mt-1" viewBox="0 0 80 24" fill="none"><path d="M0,8 Q10,12 25,10 T50,16 T80,14" stroke="#f97316" stroke-width="1.2" fill="none"/></svg>
+              </div>
+              <div class="p-2.5 rounded-xl bg-white/5 border border-white/5">
+                <p class="text-[8px] text-gray-500">Fear &amp; Greed</p>
+                <p class="text-xs font-bold mt-0.5">72</p>
+                <div class="flex items-center gap-0.5 mt-1"><span class="text-[8px] text-yellow-400 font-medium">Greed</span></div>
+                <div class="w-full h-1.5 bg-white/10 rounded-full mt-2"><div class="h-full bg-gradient-to-r from-red-500 via-yellow-500 to-green-500 rounded-full" style="width:72%"></div></div>
+              </div>
+            </div>
+            <!-- Trending -->
+            <div class="px-4 mt-3 pb-3">
+              <p class="text-[10px] text-gray-500 font-medium mb-2">Trending</p>
+              <div class="space-y-1.5">
+                <div class="flex items-center justify-between p-1.5 rounded-lg bg-white/5">
+                  <div class="flex items-center gap-2"><span class="text-[9px] text-gray-500">1</span><span class="text-[10px] font-medium">PEPE</span></div>
+                  <span class="text-[9px] text-green-400">+24.5%</span>
+                </div>
+                <div class="flex items-center justify-between p-1.5 rounded-lg bg-white/5">
+                  <div class="flex items-center gap-2"><span class="text-[9px] text-gray-500">2</span><span class="text-[10px] font-medium">WIF</span></div>
+                  <span class="text-[9px] text-green-400">+18.2%</span>
+                </div>
+                <div class="flex items-center justify-between p-1.5 rounded-lg bg-white/5">
+                  <div class="flex items-center gap-2"><span class="text-[9px] text-gray-500">3</span><span class="text-[10px] font-medium">ARB</span></div>
+                  <span class="text-[9px] text-red-400">-5.1%</span>
+                </div>
+              </div>
+            </div>
+            <!-- Bottom tab bar -->
+            <div class="flex items-center justify-around py-2 border-t border-white/10">
+              <div class="flex flex-col items-center gap-0.5"><span class="material-symbols-outlined text-gray-600" style="font-size:16px">home</span><span class="text-[7px] text-gray-600">Home</span></div>
+              <div class="flex flex-col items-center gap-0.5"><span class="material-symbols-outlined text-gray-600" style="font-size:16px">pie_chart</span><span class="text-[7px] text-gray-600">Portfolio</span></div>
+              <div class="flex flex-col items-center gap-0.5"><span class="material-symbols-outlined text-gray-600" style="font-size:16px">swap_horiz</span><span class="text-[7px] text-gray-600">Trade</span></div>
+              <div class="flex flex-col items-center gap-0.5"><span class="material-symbols-outlined text-blue-400" style="font-size:16px">bar_chart</span><span class="text-[7px] text-blue-400">Analytics</span></div>
+              <div class="flex flex-col items-center gap-0.5"><span class="material-symbols-outlined text-gray-600" style="font-size:16px">settings</span><span class="text-[7px] text-gray-600">Settings</span></div>
+            </div>
+          </div>
+              </div>
+              <figcaption class="mt-4 text-center text-sm text-gray-400">Analytics</figcaption>
+            </figure>
+            <figure class="reveal snap-center flex-shrink-0">
+              <div class="phone" role="button" tabindex="0" data-screen="Settings" aria-label="Enlarge Settings screen">
+          <div class="phone-screen">
+            <div class="flex items-center justify-between px-4 pt-2 pb-1">
+              <span class="text-[10px] text-gray-400 font-medium">9:41</span>
+              <div class="flex items-center gap-1"><div class="w-3 h-2 border border-gray-500 rounded-sm"><div class="w-1.5 h-full bg-green-400 rounded-sm"></div></div></div>
+            </div>
+            <div class="px-4 pt-2">
+              <p class="text-sm font-semibold">Settings</p>
+            </div>
+            <!-- Profile -->
+            <div class="px-4 mt-3 flex items-center gap-3 p-3 rounded-xl bg-white/5">
+              <div class="w-10 h-10 rounded-full bg-gradient-to-br from-green-400 to-blue-500 flex items-center justify-center text-sm font-bold">AJ</div>
+              <div>
+                <p class="text-xs font-medium">Alex Johnson</p>
+                <p class="text-[9px] text-gray-500">alex@example.com</p>
+              </div>
+              <span class="material-symbols-outlined text-gray-500 ml-auto" style="font-size:16px">chevron_right</span>
+            </div>
+            <!-- Toggles -->
+            <div class="px-4 mt-3 space-y-0.5">
+              <p class="text-[10px] text-gray-500 font-medium mb-1.5">Preferences</p>
+              <div class="flex items-center justify-between py-2.5 border-b border-white/5">
+                <div class="flex items-center gap-2"><span class="material-symbols-outlined text-gray-400" style="font-size:16px">dark_mode</span><span class="text-[11px]">Dark Mode</span></div>
+                <div class="w-8 h-4 rounded-full bg-blue-500 flex items-center p-0.5"><div class="w-3 h-3 rounded-full bg-white ml-auto"></div></div>
+              </div>
+              <div class="flex items-center justify-between py-2.5 border-b border-white/5">
+                <div class="flex items-center gap-2"><span class="material-symbols-outlined text-gray-400" style="font-size:16px">notifications</span><span class="text-[11px]">Notifications</span></div>
+                <div class="w-8 h-4 rounded-full bg-blue-500 flex items-center p-0.5"><div class="w-3 h-3 rounded-full bg-white ml-auto"></div></div>
+              </div>
+              <div class="flex items-center justify-between py-2.5 border-b border-white/5">
+                <div class="flex items-center gap-2"><span class="material-symbols-outlined text-gray-400" style="font-size:16px">fingerprint</span><span class="text-[11px]">Biometric Login</span></div>
+                <div class="w-8 h-4 rounded-full bg-gray-600 flex items-center p-0.5"><div class="w-3 h-3 rounded-full bg-gray-400"></div></div>
+              </div>
+            </div>
+            <!-- Sections -->
+            <div class="px-4 mt-3 space-y-0.5">
+              <p class="text-[10px] text-gray-500 font-medium mb-1.5">General</p>
+              <div class="flex items-center justify-between py-2.5 border-b border-white/5">
+                <div class="flex items-center gap-2"><span class="material-symbols-outlined text-gray-400" style="font-size:16px">security</span><span class="text-[11px]">Security</span></div>
+                <span class="material-symbols-outlined text-gray-600" style="font-size:14px">chevron_right</span>
+              </div>
+              <div class="flex items-center justify-between py-2.5 border-b border-white/5">
+                <div class="flex items-center gap-2"><span class="material-symbols-outlined text-gray-400" style="font-size:16px">privacy_tip</span><span class="text-[11px]">Privacy</span></div>
+                <span class="material-symbols-outlined text-gray-600" style="font-size:14px">chevron_right</span>
+              </div>
+              <div class="flex items-center justify-between py-2.5 border-b border-white/5">
+                <div class="flex items-center gap-2"><span class="material-symbols-outlined text-gray-400" style="font-size:16px">info</span><span class="text-[11px]">About</span></div>
+                <span class="material-symbols-outlined text-gray-600" style="font-size:14px">chevron_right</span>
+              </div>
+            </div>
+            <!-- Logout -->
+            <div class="px-4 mt-3 pb-3">
+              <button class="w-full py-2 rounded-xl bg-red-500/10 border border-red-500/20 text-[11px] font-medium text-red-400">Log Out</button>
+            </div>
+            <!-- Bottom tab bar -->
+            <div class="flex items-center justify-around py-2 border-t border-white/10">
+              <div class="flex flex-col items-center gap-0.5"><span class="material-symbols-outlined text-gray-600" style="font-size:16px">home</span><span class="text-[7px] text-gray-600">Home</span></div>
+              <div class="flex flex-col items-center gap-0.5"><span class="material-symbols-outlined text-gray-600" style="font-size:16px">pie_chart</span><span class="text-[7px] text-gray-600">Portfolio</span></div>
+              <div class="flex flex-col items-center gap-0.5"><span class="material-symbols-outlined text-gray-600" style="font-size:16px">swap_horiz</span><span class="text-[7px] text-gray-600">Trade</span></div>
+              <div class="flex flex-col items-center gap-0.5"><span class="material-symbols-outlined text-gray-600" style="font-size:16px">account_balance_wallet</span><span class="text-[7px] text-gray-600">Wallet</span></div>
+              <div class="flex flex-col items-center gap-0.5"><span class="material-symbols-outlined text-blue-400" style="font-size:16px">settings</span><span class="text-[7px] text-blue-400">Settings</span></div>
+            </div>
+          </div>
+              </div>
+              <figcaption class="mt-4 text-center text-sm text-gray-400">Settings</figcaption>
+            </figure>
+          </div>
+        </div>
+        <p class="mt-2 text-xs text-gray-500 flex items-center gap-1"><span class="material-symbols-outlined" style="font-size:16px">touch_app</span> Click any screen to enlarge</p>
+
+        <div class="mt-16 grid md:grid-cols-3 gap-6">
+          <div class="reveal p-6 rounded-2xl bg-ink-card border border-white/10">
+            <span class="material-symbols-outlined text-accent-hover">search</span>
+            <h3 class="mt-3 font-semibold">The problem</h3>
+            <p class="mt-2 text-sm text-gray-400">New investors felt overwhelmed by dense exchange UIs and abandoned onboarding within the first session.</p>
+          </div>
+          <div class="reveal p-6 rounded-2xl bg-ink-card border border-white/10">
+            <span class="material-symbols-outlined text-accent-hover">lightbulb</span>
+            <h3 class="mt-3 font-semibold">The approach</h3>
+            <p class="mt-2 text-sm text-gray-400">Progressive disclosure, a calm dark palette and one primary action per screen guided users from glance to trade.</p>
+          </div>
+          <div class="reveal p-6 rounded-2xl bg-ink-card border border-white/10">
+            <span class="material-symbols-outlined text-accent-hover">trending_up</span>
+            <h3 class="mt-3 font-semibold">The outcome</h3>
+            <p class="mt-2 text-sm text-gray-400"><strong class="text-white">+38%</strong> onboarding completion and <strong class="text-white">2.1×</strong> weekly active users within three months of launch.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== SELECTED WORK ===== -->
+    <section id="projects" class="py-24">
+      <div class="max-w-6xl mx-auto px-5">
+        <div class="flex flex-col md:flex-row md:items-end md:justify-between gap-6">
+          <div class="reveal">
+            <p class="text-sm font-medium text-accent-hover uppercase tracking-widest">Selected work</p>
+            <h2 class="mt-3 text-3xl md:text-5xl font-bold tracking-tight">More projects</h2>
+          </div>
+          <div class="reveal flex flex-wrap gap-2" role="group" aria-label="Filter projects">
+            <button class="filter-btn active" data-filter="all" aria-pressed="true">All</button>
+            <button class="filter-btn" data-filter="mobile" aria-pressed="false">Mobile</button>
+            <button class="filter-btn" data-filter="web" aria-pressed="false">Web</button>
+            <button class="filter-btn" data-filter="branding" aria-pressed="false">Branding</button>
+          </div>
+        </div>
+
+        <div id="project-grid" class="mt-12 grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
+          <article class="project-card reveal" data-category="web">
+            <div class="project-thumb bg-gradient-to-br from-emerald-500/30 via-teal-600/20 to-ink-card">
+              <div class="w-3/4 h-3/4 rounded-lg bg-ink/80 border border-white/10 p-3 space-y-2">
+                <div class="h-2 w-1/3 rounded bg-white/30"></div>
+                <div class="grid grid-cols-3 gap-2"><div class="h-10 rounded bg-emerald-400/30"></div><div class="h-10 rounded bg-white/10"></div><div class="h-10 rounded bg-white/10"></div></div>
+                <div class="h-12 rounded bg-white/5"></div>
+              </div>
+            </div>
+            <div class="p-5">
+              <h3 class="font-semibold">Verdant — SaaS Analytics</h3>
+              <p class="text-sm text-gray-400 mt-1">Campaign performance dashboard for marketing teams.</p>
+              <div class="mt-3 flex flex-wrap gap-1.5"><span class="tag">Web app</span><span class="tag">Data viz</span></div>
+            </div>
+          </article>
+
+          <article class="project-card reveal" data-category="mobile">
+            <div class="project-thumb bg-gradient-to-br from-orange-500/30 via-rose-500/20 to-ink-card">
+              <div class="w-24 h-44 rounded-2xl bg-ink/80 border border-white/10 p-2 space-y-1.5">
+                <div class="h-16 rounded-lg bg-orange-400/30"></div>
+                <div class="h-2 w-3/4 rounded bg-white/30"></div>
+                <div class="h-2 w-1/2 rounded bg-white/15"></div>
+                <div class="h-6 rounded-md bg-orange-500/60 mt-3"></div>
+              </div>
+            </div>
+            <div class="p-5">
+              <h3 class="font-semibold">Ember — Food Delivery</h3>
+              <p class="text-sm text-gray-400 mt-1">Ordering flow redesign that cut checkout time in half.</p>
+              <div class="mt-3 flex flex-wrap gap-1.5"><span class="tag">iOS</span><span class="tag">Android</span></div>
+            </div>
+          </article>
+
+          <article class="project-card reveal" data-category="branding">
+            <div class="project-thumb bg-gradient-to-br from-violet-500/30 via-fuchsia-500/20 to-ink-card">
+              <div class="flex items-center gap-3">
+                <div class="w-16 h-16 rounded-2xl bg-gradient-to-br from-violet-400 to-fuchsia-500 rotate-12"></div>
+                <div class="space-y-1.5"><div class="h-3 w-20 rounded bg-white/50"></div><div class="h-2 w-14 rounded bg-white/20"></div></div>
+              </div>
+            </div>
+            <div class="p-5">
+              <h3 class="font-semibold">Lumen — Brand Identity</h3>
+              <p class="text-sm text-gray-400 mt-1">Logo, type system and guidelines for an AI startup.</p>
+              <div class="mt-3 flex flex-wrap gap-1.5"><span class="tag">Branding</span><span class="tag">Guidelines</span></div>
+            </div>
+          </article>
+
+          <article class="project-card reveal" data-category="web">
+            <div class="project-thumb bg-gradient-to-br from-sky-500/30 via-blue-600/20 to-ink-card">
+              <div class="w-3/4 space-y-2">
+                <div class="h-3 w-2/3 rounded bg-white/50 mx-auto"></div>
+                <div class="h-2 w-1/2 rounded bg-white/20 mx-auto"></div>
+                <div class="h-6 w-24 rounded-full bg-sky-500/70 mx-auto mt-3"></div>
+                <div class="grid grid-cols-3 gap-2 pt-3"><div class="h-8 rounded bg-white/10"></div><div class="h-8 rounded bg-white/10"></div><div class="h-8 rounded bg-white/10"></div></div>
+              </div>
+            </div>
+            <div class="p-5">
+              <h3 class="font-semibold">Northwind — Landing Page</h3>
+              <p class="text-sm text-gray-400 mt-1">Conversion-focused marketing site for a travel startup.</p>
+              <div class="mt-3 flex flex-wrap gap-1.5"><span class="tag">Marketing</span><span class="tag">Webflow</span></div>
+            </div>
+          </article>
+
+          <article class="project-card reveal" data-category="mobile">
+            <div class="project-thumb bg-gradient-to-br from-lime-500/25 via-green-600/20 to-ink-card">
+              <div class="w-24 h-44 rounded-2xl bg-ink/80 border border-white/10 p-2 flex flex-col items-center justify-center gap-2">
+                <div class="w-14 h-14 rounded-full border-4 border-lime-400/60 border-t-transparent"></div>
+                <div class="h-2 w-12 rounded bg-white/30"></div>
+                <div class="flex gap-1"><div class="w-3 h-6 rounded bg-lime-400/50"></div><div class="w-3 h-4 rounded bg-lime-400/30 self-end"></div><div class="w-3 h-5 rounded bg-lime-400/40 self-end"></div></div>
+              </div>
+            </div>
+            <div class="p-5">
+              <h3 class="font-semibold">Pulse — Fitness Tracker</h3>
+              <p class="text-sm text-gray-400 mt-1">Habit-building workouts with friendly progress rings.</p>
+              <div class="mt-3 flex flex-wrap gap-1.5"><span class="tag">Health</span><span class="tag">Wearables</span></div>
+            </div>
+          </article>
+
+          <article class="project-card reveal" data-category="branding">
+            <div class="project-thumb bg-gradient-to-br from-amber-400/30 via-yellow-600/15 to-ink-card">
+              <div class="grid grid-cols-2 gap-2">
+                <div class="w-14 h-14 rounded-lg bg-amber-400/70"></div><div class="w-14 h-14 rounded-lg bg-white/80"></div>
+                <div class="w-14 h-14 rounded-lg bg-ink border border-white/20"></div><div class="w-14 h-14 rounded-lg bg-amber-700/60"></div>
+              </div>
+            </div>
+            <div class="p-5">
+              <h3 class="font-semibold">Hearth — Coffee Roasters</h3>
+              <p class="text-sm text-gray-400 mt-1">Packaging and color system for a specialty roaster.</p>
+              <div class="mt-3 flex flex-wrap gap-1.5"><span class="tag">Packaging</span><span class="tag">Color</span></div>
+            </div>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== ABOUT ===== -->
+    <section id="about" class="py-24 bg-ink-surface/40 border-y border-white/5">
+      <div class="max-w-6xl mx-auto px-5 grid lg:grid-cols-2 gap-16">
+        <div class="reveal">
+          <p class="text-sm font-medium text-accent-hover uppercase tracking-widest">About</p>
+          <h2 class="mt-3 text-3xl md:text-5xl font-bold tracking-tight">Design with intent, build with care.</h2>
+          <p class="mt-6 text-gray-400">I've spent the last eight years at the intersection of design and engineering — from early-stage startups to global fintech teams. I believe great products come from understanding people first, then sweating every pixel and interaction.</p>
+          <p class="mt-4 text-gray-400">When I'm not designing, you'll find me prototyping with AI tools, mentoring junior designers, or hunting for the perfect espresso.</p>
+          <div class="mt-8 flex flex-wrap gap-2">
+            <span class="skill">Product Strategy</span><span class="skill">UX Research</span><span class="skill">Interaction Design</span>
+            <span class="skill">Design Systems</span><span class="skill">Prototyping</span><span class="skill">Figma</span>
+            <span class="skill">Stitch</span><span class="skill">HTML / CSS</span><span class="skill">React</span><span class="skill">Tailwind</span>
+          </div>
+        </div>
+        <ol class="reveal relative border-l border-white/10 ml-2 space-y-10">
+          <li class="pl-8 relative">
+            <span class="timeline-dot"></span>
+            <p class="text-xs text-gray-500">2023 — Present</p>
+            <h3 class="font-semibold mt-1">Lead Product Designer · Coinly</h3>
+            <p class="text-sm text-gray-400 mt-1">Own the end-to-end design of the mobile trading experience and design system.</p>
+          </li>
+          <li class="pl-8 relative">
+            <span class="timeline-dot"></span>
+            <p class="text-xs text-gray-500">2020 — 2023</p>
+            <h3 class="font-semibold mt-1">Senior UX Designer · Northwind</h3>
+            <p class="text-sm text-gray-400 mt-1">Led booking flow redesign and grew the design team from 2 to 7.</p>
+          </li>
+          <li class="pl-8 relative">
+            <span class="timeline-dot"></span>
+            <p class="text-xs text-gray-500">2018 — 2020</p>
+            <h3 class="font-semibold mt-1">Frontend Designer · Studio Fern</h3>
+            <p class="text-sm text-gray-400 mt-1">Designed and built marketing sites and brand identities for 30+ clients.</p>
+          </li>
+        </ol>
+      </div>
+    </section>
+
+    <!-- ===== SERVICES ===== -->
+    <section id="services" class="py-24">
+      <div class="max-w-6xl mx-auto px-5">
+        <div class="reveal max-w-2xl">
+          <p class="text-sm font-medium text-accent-hover uppercase tracking-widest">Services</p>
+          <h2 class="mt-3 text-3xl md:text-5xl font-bold tracking-tight">How I can help</h2>
+        </div>
+        <div class="mt-12 grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
+          <div class="service-card reveal">
+            <span class="service-icon material-symbols-outlined">design_services</span>
+            <h3 class="mt-5 font-semibold">UI / UX Design</h3>
+            <p class="mt-2 text-sm text-gray-400">Research-led interfaces for mobile and web that are intuitive from the first tap.</p>
+          </div>
+          <div class="service-card reveal">
+            <span class="service-icon material-symbols-outlined">play_circle</span>
+            <h3 class="mt-5 font-semibold">Rapid Prototyping</h3>
+            <p class="mt-2 text-sm text-gray-400">Clickable, AI-assisted prototypes to validate ideas with real users in days.</p>
+          </div>
+          <div class="service-card reveal">
+            <span class="service-icon material-symbols-outlined">widgets</span>
+            <h3 class="mt-5 font-semibold">Design Systems</h3>
+            <p class="mt-2 text-sm text-gray-400">Scalable tokens, components and docs that keep teams shipping consistently.</p>
+          </div>
+          <div class="service-card reveal">
+            <span class="service-icon material-symbols-outlined">code</span>
+            <h3 class="mt-5 font-semibold">Frontend Development</h3>
+            <p class="mt-2 text-sm text-gray-400">Pixel-perfect, accessible builds in HTML, Tailwind and React.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== TESTIMONIALS ===== -->
+    <section class="py-24 bg-ink-surface/40 border-y border-white/5">
+      <div class="max-w-6xl mx-auto px-5">
+        <h2 class="reveal text-3xl md:text-5xl font-bold tracking-tight">Kind words</h2>
+        <div class="mt-12 grid md:grid-cols-3 gap-6">
+          <figure class="reveal p-6 rounded-2xl bg-ink-card border border-white/10 flex flex-col">
+            <blockquote class="text-gray-300 flex-1">"Alex turned a messy product into something our users genuinely enjoy. Our app store rating went from 3.6 to 4.8."</blockquote>
+            <figcaption class="mt-6 flex items-center gap-3">
+              <span class="w-10 h-10 rounded-full bg-gradient-to-br from-orange-400 to-pink-500 grid place-items-center text-sm font-bold">MK</span>
+              <span><span class="block text-sm font-medium">Maya Kim</span><span class="block text-xs text-gray-500">CEO, Coinly</span></span>
+            </figcaption>
+          </figure>
+          <figure class="reveal p-6 rounded-2xl bg-ink-card border border-white/10 flex flex-col">
+            <blockquote class="text-gray-300 flex-1">"The rare designer who can also ship code. Handoff was seamless and the design system still scales today."</blockquote>
+            <figcaption class="mt-6 flex items-center gap-3">
+              <span class="w-10 h-10 rounded-full bg-gradient-to-br from-sky-400 to-indigo-500 grid place-items-center text-sm font-bold">DO</span>
+              <span><span class="block text-sm font-medium">Daniel Okafor</span><span class="block text-xs text-gray-500">CTO, Northwind</span></span>
+            </figcaption>
+          </figure>
+          <figure class="reveal p-6 rounded-2xl bg-ink-card border border-white/10 flex flex-col">
+            <blockquote class="text-gray-300 flex-1">"Fast, thoughtful and a joy to collaborate with. Our new brand finally feels like us."</blockquote>
+            <figcaption class="mt-6 flex items-center gap-3">
+              <span class="w-10 h-10 rounded-full bg-gradient-to-br from-violet-400 to-fuchsia-500 grid place-items-center text-sm font-bold">SL</span>
+              <span><span class="block text-sm font-medium">Sofia Lindqvist</span><span class="block text-xs text-gray-500">Founder, Lumen</span></span>
+            </figcaption>
+          </figure>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== CONTACT ===== -->
+    <section id="contact" class="py-24">
+      <div class="max-w-6xl mx-auto px-5 grid lg:grid-cols-2 gap-16">
+        <div class="reveal">
+          <p class="text-sm font-medium text-accent-hover uppercase tracking-widest">Contact</p>
+          <h2 class="mt-3 text-3xl md:text-5xl font-bold tracking-tight">Have a project in mind?</h2>
+          <p class="mt-6 text-gray-400">Tell me a little about what you're building. I usually reply within one business day.</p>
+          <ul class="mt-8 space-y-3 text-sm">
+            <li class="flex items-center gap-3"><span class="material-symbols-outlined text-gray-500">mail</span> hello@alexrivera.design</li>
+            <li class="flex items-center gap-3"><span class="material-symbols-outlined text-gray-500">location_on</span> Remote · Based in Lisbon</li>
+          </ul>
+        </div>
+        <form id="contact-form" class="reveal p-6 md:p-8 rounded-2xl bg-ink-card border border-white/10 space-y-5" novalidate>
+          <div>
+            <label for="name" class="block text-sm font-medium text-gray-300">Name</label>
+            <input id="name" name="name" type="text" autocomplete="name" required class="field" placeholder="Jane Doe">
+            <p class="field-error" data-for="name">Please enter your name.</p>
+          </div>
+          <div>
+            <label for="email" class="block text-sm font-medium text-gray-300">Email</label>
+            <input id="email" name="email" type="email" autocomplete="email" required class="field" placeholder="jane@company.com">
+            <p class="field-error" data-for="email">Please enter a valid email.</p>
+          </div>
+          <div>
+            <label for="message" class="block text-sm font-medium text-gray-300">Message</label>
+            <textarea id="message" name="message" rows="4" required minlength="10" class="field resize-none" placeholder="Tell me about your project..."></textarea>
+            <p class="field-error" data-for="message">Please write at least 10 characters.</p>
+          </div>
+          <button type="submit" class="w-full inline-flex items-center justify-center gap-2 px-6 py-3 rounded-full bg-accent hover:bg-accent-hover font-medium transition-colors">
+            Send message <span class="material-symbols-outlined" style="font-size:20px">send</span>
+          </button>
+        </form>
+      </div>
+    </section>
+  </main>
+
+  <!-- ===== FOOTER ===== -->
+  <footer class="border-t border-white/10">
+    <div class="max-w-6xl mx-auto px-5 py-10 flex flex-col md:flex-row items-center justify-between gap-6 text-sm text-gray-500">
+      <p>&copy; <span id="year"></span> Alex Rivera. Designed with Stitch.</p>
+      <ul class="flex items-center gap-6">
+        <li><a href="#" class="hover:text-white transition-colors">Dribbble</a></li>
+        <li><a href="#" class="hover:text-white transition-colors">LinkedIn</a></li>
+        <li><a href="#" class="hover:text-white transition-colors">GitHub</a></li>
+      </ul>
+      <a href="#top" class="inline-flex items-center gap-1 hover:text-white transition-colors">Back to top <span class="material-symbols-outlined" style="font-size:18px">arrow_upward</span></a>
+    </div>
+  </footer>
+
+  <!-- ===== LIGHTBOX ===== -->
+  <div id="lightbox" class="fixed inset-0 z-[60] hidden items-center justify-center bg-black/80 backdrop-blur-sm p-6" role="dialog" aria-modal="true" aria-label="Screen preview">
+    <button id="lightbox-close" class="absolute top-5 right-5 p-2 rounded-full bg-white/10 hover:bg-white/20" aria-label="Close preview">
+      <span class="material-symbols-outlined">close</span>
+    </button>
+    <div id="lightbox-content" class="lightbox-phone"></div>
+  </div>
+
+  <!-- ===== TOAST ===== -->
+  <div id="toast" class="toast" role="status" aria-live="polite">
+    <span class="material-symbols-outlined text-green-400">check_circle</span>
+    <span id="toast-text"></span>
+  </div>
+
+  <script src="app.js"></script>
+</body>
+</html>
