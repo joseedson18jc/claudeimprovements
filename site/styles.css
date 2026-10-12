@@ -46,12 +46,12 @@ section[id] { scroll-margin-top: 4rem; }
 }
 .pulse-dot { animation: pulse-dot 1.6s ease-in-out infinite; }
 
-.reveal {
+.js-reveal .reveal {
   opacity: 0;
   transform: translateY(24px);
   transition: opacity 0.7s ease, transform 0.7s cubic-bezier(0.2, 0.7, 0.2, 1);
 }
-.reveal.visible { opacity: 1; transform: none; }
+.js-reveal .reveal.visible { opacity: 1; transform: none; }
 
 .phone {
   display: block;
@@ -77,15 +77,15 @@ section[id] { scroll-margin-top: 4rem; }
   pointer-events: none;
 }
 
-#lightbox.open { display: flex; }
-.lightbox-phone .phone {
+#lightbox.open { display: block; }
+.lightbox-phone .phone,
+.lightbox-phone .phone:hover {
   cursor: default;
-  transform: scale(1.35);
-  transform-origin: center;
+  transform: none;
 }
-.lightbox-phone .phone:hover { transform: scale(1.35); }
-@media (max-width: 640px), (max-height: 820px) {
-  .lightbox-phone .phone, .lightbox-phone .phone:hover { transform: scale(1); }
+/* zoom (unlike transform) affects layout, so a too-tall preview stays scrollable */
+@media (min-width: 641px) and (min-height: 1000px) {
+  .lightbox-phone .phone { zoom: 1.35; }
 }
 
 .filter-btn {
@@ -208,5 +208,5 @@ section[id] { scroll-margin-top: 4rem; }
     transition-duration: 0.01ms !important;
     scroll-behavior: auto !important;
   }
-  .reveal { opacity: 1; transform: none; }
+  .js-reveal .reveal { opacity: 1; transform: none; }
 }

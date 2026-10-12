@@ -1,3 +1,6 @@
+// Content is visible by default; only hide it for the reveal animation once this script is running.
+document.documentElement.classList.add('js-reveal');
+
 document.addEventListener('DOMContentLoaded', () => {
   const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
@@ -84,7 +87,12 @@ document.addEventListener('DOMContentLoaded', () => {
   const lightbox = document.getElementById('lightbox');
   const lightboxContent = document.getElementById('lightbox-content');
   const lightboxClose = document.getElementById('lightbox-close');
+  const lightboxScroll = document.getElementById('lightbox-scroll');
+  const lightboxFocusables = [lightboxScroll, lightboxClose];
+  const background = [...document.body.children].filter(el => el !== lightbox && el.tagName !== 'SCRIPT');
   let lastFocused = null;
+
+  const setBackgroundInert = (inert) => background.forEach(el => { el.inert = inert; });
 
   const openLightbox = (phone) => {
     lastFocused = phone;
@@ -95,13 +103,16 @@ document.addEventListener('DOMContentLoaded', () => {
     lightboxContent.replaceChildren(clone);
     lightbox.setAttribute('aria-label', `${phone.dataset.screen} screen preview`);
     lightbox.classList.add('open');
+    lightboxScroll.scrollTop = 0;
     document.body.style.overflow = 'hidden';
+    setBackgroundInert(true);
     lightboxClose.focus();
   };
   const closeLightbox = () => {
     lightbox.classList.remove('open');
     lightboxContent.replaceChildren();
     document.body.style.overflow = '';
+    setBackgroundInert(false);
     if (lastFocused) lastFocused.focus();
   };
 
@@ -115,9 +126,19 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   });
   lightboxClose.addEventListener('click', closeLightbox);
-  lightbox.addEventListener('click', (e) => { if (e.target === lightbox) closeLightbox(); });
+  lightbox.addEventListener('click', (e) => {
+    if (e.target === lightbox || e.target === lightboxScroll) closeLightbox();
+  });
   document.addEventListener('keydown', (e) => {
-    if (e.key === 'Escape' && lightbox.classList.contains('open')) closeLightbox();
+    if (!lightbox.classList.contains('open')) return;
+    if (e.key === 'Escape') {
+      closeLightbox();
+    } else if (e.key === 'Tab') {
+      e.preventDefault();
+      const i = lightboxFocusables.indexOf(document.activeElement);
+      const next = (i + (e.shiftKey ? -1 : 1) + lightboxFocusables.length) % lightboxFocusables.length;
+      lightboxFocusables[i === -1 ? 0 : next].focus();
+    }
   });
 
   // --- Contact form ---
@@ -139,11 +160,22 @@ document.addEventListener('DOMContentLoaded', () => {
     message: v => v.trim().length >= 10,
   };
 
+  // The error is only referenced while shown, so screen readers don't announce it for a valid field.
+  const setInvalid = (field, invalid) => {
+    field.classList.toggle('invalid', invalid);
+    if (invalid) {
+      field.setAttribute('aria-invalid', 'true');
+      field.setAttribute('aria-describedby', `${field.name}-error`);
+    } else {
+      field.removeAttribute('aria-invalid');
+      field.removeAttribute('aria-describedby');
+    }
+  };
+
   form.querySelectorAll('.field').forEach(field => {
     field.addEventListener('input', () => {
       if (field.classList.contains('invalid') && validators[field.name](field.value)) {
-        field.classList.remove('invalid');
-        field.removeAttribute('aria-invalid');
+        setInvalid(field, false);
       }
     });
   });
@@ -154,9 +186,7 @@ document.addEventListener('DOMContentLoaded', () => {
     Object.entries(validators).forEach(([name, isValid]) => {
       const field = form.elements[name];
       const ok = isValid(field.value);
-      field.classList.toggle('invalid', !ok);
-      if (ok) field.removeAttribute('aria-invalid');
-      else field.setAttribute('aria-invalid', 'true');
+      setInvalid(field, !ok);
       if (!ok && !firstInvalid) firstInvalid = field;
     });
     if (firstInvalid) {
